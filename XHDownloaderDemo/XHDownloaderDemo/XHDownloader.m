@@ -8,6 +8,11 @@
 
 #import "XHDownloader.h"
 
+@interface XHDownloader ()<NSURLSessionDataDelegate>
+@property (strong, nonatomic) NSOperationQueue *downloadQueue;
+@property (strong, nonatomic) NSURLSession *session;
+@end
+
 @implementation XHDownloader
 
 + (instancetype)sharedInstance {
@@ -18,6 +23,18 @@
     });
     return downloader;
 }
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _downloadQueue = [[NSOperationQueue alloc]init];
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+        
+    }
+    return self;
+}
+
 
 - (void)downloadWithURL:(NSURL *)url
                progress:(XHDownloaderProgressBlock)progressBlock
