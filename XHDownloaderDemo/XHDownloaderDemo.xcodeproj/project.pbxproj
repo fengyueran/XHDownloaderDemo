@@ -15,6 +15,7 @@
 		E720733E1EAF67D300A3B879 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E720733C1EAF67D300A3B879 /* LaunchScreen.storyboard */; };
 		E72073491EAF67D300A3B879 /* XHDownloaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073481EAF67D300A3B879 /* XHDownloaderDemoTests.m */; };
 		E72073541EAF67D300A3B879 /* XHDownloaderDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073531EAF67D300A3B879 /* XHDownloaderDemoUITests.m */; };
+		E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073621EAF67F700A3B879 /* XHDownloader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		E720734F1EAF67D300A3B879 /* XHDownloaderDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XHDownloaderDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E72073531EAF67D300A3B879 /* XHDownloaderDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XHDownloaderDemoUITests.m; sourceTree = "<group>"; };
 		E72073551EAF67D300A3B879 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E72073611EAF67F700A3B879 /* XHDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloader.h; sourceTree = "<group>"; };
+		E72073621EAF67F700A3B879 /* XHDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				E72073321EAF67D300A3B879 /* AppDelegate.m */,
 				E72073341EAF67D300A3B879 /* ViewController.h */,
 				E72073351EAF67D300A3B879 /* ViewController.m */,
+				E72073611EAF67F700A3B879 /* XHDownloader.h */,
+				E72073621EAF67F700A3B879 /* XHDownloader.m */,
 				E72073371EAF67D300A3B879 /* Main.storyboard */,
 				E720733A1EAF67D300A3B879 /* Assets.xcassets */,
 				E720733C1EAF67D300A3B879 /* LaunchScreen.storyboard */,
@@ -273,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */,
 				E72073361EAF67D300A3B879 /* ViewController.m in Sources */,
 				E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */,
 				E72073301EAF67D300A3B879 /* main.m in Sources */,
