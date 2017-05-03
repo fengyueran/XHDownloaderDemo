@@ -16,6 +16,8 @@
 		E72073491EAF67D300A3B879 /* XHDownloaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073481EAF67D300A3B879 /* XHDownloaderDemoTests.m */; };
 		E72073541EAF67D300A3B879 /* XHDownloaderDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073531EAF67D300A3B879 /* XHDownloaderDemoUITests.m */; };
 		E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073621EAF67F700A3B879 /* XHDownloader.m */; };
+		E7EC38FA1EB9E85B00320DA1 /* XHMediaFile.m in Sources */ = {isa = PBXBuildFile; fileRef = E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */; };
+		E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,10 @@
 		E72073551EAF67D300A3B879 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E72073611EAF67F700A3B879 /* XHDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloader.h; sourceTree = "<group>"; };
 		E72073621EAF67F700A3B879 /* XHDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloader.m; sourceTree = "<group>"; };
+		E7EC38F81EB9E85B00320DA1 /* XHMediaFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaFile.h; sourceTree = "<group>"; };
+		E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaFile.m; sourceTree = "<group>"; };
+		E7EC39001EB9F5ED00320DA1 /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
+		E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,8 +114,7 @@
 				E72073321EAF67D300A3B879 /* AppDelegate.m */,
 				E72073341EAF67D300A3B879 /* ViewController.h */,
 				E72073351EAF67D300A3B879 /* ViewController.m */,
-				E72073611EAF67F700A3B879 /* XHDownloader.h */,
-				E72073621EAF67F700A3B879 /* XHDownloader.m */,
+				E7EC38F71EB9E80300320DA1 /* XHDownloader */,
 				E72073371EAF67D300A3B879 /* Main.storyboard */,
 				E720733A1EAF67D300A3B879 /* Assets.xcassets */,
 				E720733C1EAF67D300A3B879 /* LaunchScreen.storyboard */,
@@ -143,6 +148,27 @@
 				E72073551EAF67D300A3B879 /* Info.plist */,
 			);
 			path = XHDownloaderDemoUITests;
+			sourceTree = "<group>";
+		};
+		E7EC38F71EB9E80300320DA1 /* XHDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				E7EC38FF1EB9F5ED00320DA1 /* MD5 */,
+				E72073611EAF67F700A3B879 /* XHDownloader.h */,
+				E72073621EAF67F700A3B879 /* XHDownloader.m */,
+				E7EC38F81EB9E85B00320DA1 /* XHMediaFile.h */,
+				E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */,
+			);
+			name = XHDownloader;
+			sourceTree = "<group>";
+		};
+		E7EC38FF1EB9F5ED00320DA1 /* MD5 */ = {
+			isa = PBXGroup;
+			children = (
+				E7EC39001EB9F5ED00320DA1 /* NSString+Hash.h */,
+				E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */,
+			);
+			path = MD5;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +304,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7EC38FA1EB9E85B00320DA1 /* XHMediaFile.m in Sources */,
+				E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */,
 				E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */,
 				E72073361EAF67D300A3B879 /* ViewController.m in Sources */,
 				E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */,
@@ -513,6 +541,7 @@
 				E720735A1EAF67D300A3B879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E720735B1EAF67D300A3B879 /* Build configuration list for PBXNativeTarget "XHDownloaderDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +550,7 @@
 				E720735D1EAF67D300A3B879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E720735E1EAF67D300A3B879 /* Build configuration list for PBXNativeTarget "XHDownloaderDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -529,6 +559,7 @@
 				E72073601EAF67D300A3B879 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

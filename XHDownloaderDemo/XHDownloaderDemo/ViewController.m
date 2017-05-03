@@ -7,8 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "XHDownloader.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *download;
+- (IBAction)download:(id)sender;
 
 @end
 
@@ -20,5 +23,15 @@
 }
 
 
+
+- (IBAction)download:(id)sender {
+  NSString *url = @"http://120.25.226.186:32812/resources/videos/minion_01.mp4";
+  [[XHDownloader sharedInstance] downloadWithURL:[NSURL URLWithString:url] progress:^(NSInteger expectedSize, NSInteger receivedSize, NSInteger speed) {
+      NSLog(@"downloading");
+  } completed:^(BOOL finished) {
+      NSLog(@"finish");
+  }];
+ 
+}
 
 @end
