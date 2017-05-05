@@ -16,7 +16,7 @@ typedef void(^XHDownloaderCompletedBlock)( BOOL finished);
 
 + (instancetype)sharedInstance;
 
-- (void)downloadWithURL:(NSURL *)url
+- (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
               completed:(XHDownloaderCompletedBlock)completedBlock;
 @end
