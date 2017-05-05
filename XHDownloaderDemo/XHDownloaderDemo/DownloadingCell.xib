@@ -43,7 +43,7 @@
                         <color key="textColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="下载中" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GP8-BT-3Do">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="下载状态" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GP8-BT-3Do">
                         <rect key="frame" x="109" y="33" width="140" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="YYG-SU-744"/>
@@ -91,6 +91,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="downloadStateLabel" destination="GP8-BT-3Do" id="BWt-pO-i2B"/>
                 <outlet property="progressLabel" destination="YpJ-bS-LCW" id="6AS-uK-aBy"/>
                 <outlet property="progressView" destination="2rN-Wf-fLg" id="uMN-rE-Wg6"/>
                 <outlet property="speedLabel" destination="5wi-0B-UUU" id="bwo-iR-2cz"/>

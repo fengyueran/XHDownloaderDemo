@@ -13,6 +13,7 @@
 
 @property (nonatomic, copy) NSString* ID;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *downloadStateLabel;
 - (void)updateStatus;
 
 @end

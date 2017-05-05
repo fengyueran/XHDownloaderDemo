@@ -10,9 +10,9 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, MediaFileState) {
-    MediaFileStateStart,
     MediaFileStateSuspended,
     MediaFileStateDownloading,
+    MediaFileStatePending,
     MediaFileStateFailed,
     MediaFileStateCompleted,
 };

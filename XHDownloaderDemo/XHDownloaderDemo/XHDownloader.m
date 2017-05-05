@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSURLSession *session;
 @property (strong, nonatomic) NSString *cacheDir;
 @property (nonatomic, strong) NSMutableDictionary *tasks;
+@property (nonatomic, assign) NSUInteger maxDownloads;
 /** 保存所有下载相关信息 */
 @property (nonatomic, strong) NSMutableDictionary *mediaFiles;
 @end
@@ -39,6 +40,7 @@
         _cacheDir = [self createCacheDirectory];
         _mediaFiles = [NSMutableDictionary dictionary];
         _tasks = [NSMutableDictionary dictionary];
+        _maxDownloads = 2;
         
     }
     return self;
@@ -78,8 +80,10 @@
         return;
     }
     
+
+//    [self createTaskWithID:<#(NSString *)#>ID]
     // 创建流
-    NSString *cachePath = [_cacheDir stringByAppendingPathComponent:url.md5String];
+    NSString *cachePath = [_cacheDir stringByAppendingPathComponent:ID];
     NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:cachePath append:YES];
     
     // 创建请求
@@ -99,7 +103,7 @@
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
     NSUInteger taskIdentifier = arc4random() % ((arc4random() % 10000 + arc4random() % 10000));
     [task setValue:@(taskIdentifier) forKeyPath:@"taskIdentifier"];
-
+    
     // 保存任务
     [self.tasks setValue:task forKey:ID];
     
@@ -108,11 +112,38 @@
     mediaFile.downloadedBytes = downloadedBytes;
     mediaFile.stateBlock = stateBlock;
     mediaFile.progressBlock = progressBlock;
-    mediaFile.state = MediaFileStateStart;
+    
     mediaFile.ID = ID;
     [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
-    [task resume];
 
+    [self queueTask:mediaFile task:task];
+
+    
+
+
+}
+
+- (void)queueTask:(XHMediaFile *)mediaFile task:(NSURLSessionDataTask *)task {
+    if ([self runningCount] >= _maxDownloads) {
+        mediaFile.state = MediaFileStatePending;
+    } else {
+         mediaFile.state = MediaFileStateDownloading;
+         [task resume];
+    }
+   
+}
+
+- (void)launchNextTask {
+    for (NSString* key in self.mediaFiles) {
+        XHMediaFile* mf = [self.mediaFiles objectForKey:key];
+        if (mf.state == MediaFileStatePending && [self runningCount] < 2) {
+            mf.state = MediaFileStateDownloading;
+            NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
+            [task resume];
+            
+        }
+    }
+    
 }
 
 - (void)handle:(NSString *)ID
@@ -120,7 +151,7 @@
     NSURLSessionDataTask *task = [self getTask:ID];
     XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
 
-    if (mediaFile.state == MediaFileStateStart) {
+    if (mediaFile.state == MediaFileStateDownloading) {
         [self pause:ID];
     }
 }
@@ -153,6 +184,17 @@
 - (XHMediaFile *)getMediaFile:(NSUInteger)taskIdentifier
 {
     return (XHMediaFile *)[self.mediaFiles valueForKey:@(taskIdentifier).stringValue];
+}
+
+- (int)runningCount {
+    int count = 0;
+    for (NSString* key in self.mediaFiles) {
+        XHMediaFile* mf = [self.mediaFiles objectForKey:key];
+        if (mf.state == MediaFileStateDownloading) {
+            count++;
+        }
+    }
+    return count;
 }
 
 #pragma mark NSURLSessionDataDelegate
@@ -217,6 +259,8 @@ didReceiveResponse:(NSURLResponse *)response
     // 清除任务
     [self.tasks removeObjectForKey:mediaFile.ID];
     [self.mediaFiles removeObjectForKey:@(task.taskIdentifier).stringValue];
+    
+    [self launchNextTask];
 }
 
 @end

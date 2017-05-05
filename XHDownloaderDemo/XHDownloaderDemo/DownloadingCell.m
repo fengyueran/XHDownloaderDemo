@@ -16,7 +16,7 @@
 @interface DownloadingCell ()
 //@property (nonatomic, readonly) MediaFile* mf;
 @property (weak, nonatomic) IBOutlet UILabel *fileNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *downloadStateLabel;
+
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *maskView;
 

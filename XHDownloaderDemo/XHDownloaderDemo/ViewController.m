@@ -62,11 +62,13 @@
 #pragma mark 按钮状态
 - (NSString *)getTitleWithDownloadState:(MediaFileState)state {
     switch (state) {
-        case MediaFileStateStart:
-            return @"暂停";
-        case MediaFileStateSuspended:
+        case MediaFileStateDownloading:
+            return @"下载中";
         case MediaFileStateFailed:
-            return @"开始";
+        case MediaFileStateSuspended:
+            return @"暂停";
+        case MediaFileStatePending:
+            return @"等待下载";
         case MediaFileStateCompleted:
             return @"完成";
         default:
@@ -87,16 +89,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *url = self.urls[indexPath.row];
+     DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [[XHDownloader sharedInstance] downloadWithURL:url progress:^(long long receivedSize, long long expectedSize, NSInteger speed) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+           
             cell.progressLabel.text = [NSString stringWithFormat:@"%f",1.0 * receivedSize/expectedSize];
+           
         });
         
     } state:^(MediaFileState state) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.button setTitle:[self getTitleWithDownloadState:state] forState:UIControlStateNormal];
-        });
+            cell.downloadStateLabel.text = [self getTitleWithDownloadState:state];
+                   });
     }];
 }
 
