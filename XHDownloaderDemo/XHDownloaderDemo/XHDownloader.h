@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XHMediaFile.h"
 
-typedef void(^XHDownloaderProgressBlock)(NSInteger expectedSize, NSInteger receivedSize, NSInteger speed);
-typedef void(^XHDownloaderCompletedBlock)( BOOL finished);
+typedef void(^XHDownloaderProgressBlock)(long long receivedSize, long long expectedSize, NSInteger speed);
+typedef void(^XHDownloaderStateBlock)( MediaFileState state);
 
 
 @interface XHDownloader : NSObject
@@ -18,5 +19,5 @@ typedef void(^XHDownloaderCompletedBlock)( BOOL finished);
 
 - (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
-              completed:(XHDownloaderCompletedBlock)completedBlock;
+                  state:(XHDownloaderStateBlock)stateBlock;
 @end

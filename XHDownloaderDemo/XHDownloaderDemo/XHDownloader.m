@@ -8,7 +8,7 @@
 
 #import "XHDownloader.h"
 #import "NSString+Hash.h"
-#import "XHMediaFile.h"
+
 
 
 @interface XHDownloader ()<NSURLSessionDataDelegate>
@@ -46,7 +46,7 @@
 
 - (NSString *)createCacheDirectory {
     NSString *documentPath =  [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *dataPath = [documentPath stringByAppendingString:@"XHCache"];
+    NSString *dataPath = [documentPath stringByAppendingPathComponent:@"XHCache"];
     [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:YES attributes:nil error:NULL];
     return dataPath;
 }
@@ -67,16 +67,26 @@
 
 - (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
-              completed:(XHDownloaderCompletedBlock)completedBlock {
+                  state:(XHDownloaderStateBlock)stateBlock {
+
+    
+    NSString *ID = url.md5String;
+    
+    // 暂停
+    if ([self.tasks valueForKey:ID]) {
+        [self handle:ID];
+        return;
+    }
+    
     // 创建流
-    NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:[_cacheDir stringByAppendingString:url.md5String] append:YES];
+    NSString *cachePath = [_cacheDir stringByAppendingPathComponent:url.md5String];
+    NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:cachePath append:YES];
     
     // 创建请求
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     
-    NSString *ID = url.md5String;
     //获取已下载的文件长度
-    long long downloadedBytes = [self fileSizeForPath:ID];
+    long long downloadedBytes = [self fileSizeForPath:cachePath];
     
     
     // 设置请求头
@@ -95,22 +105,39 @@
     
     XHMediaFile *mediaFile = [[XHMediaFile alloc]init];
     mediaFile.stream = stream;
+    mediaFile.downloadedBytes = downloadedBytes;
+    mediaFile.stateBlock = stateBlock;
+    mediaFile.progressBlock = progressBlock;
+    mediaFile.state = MediaFileStateStart;
+    mediaFile.ID = ID;
     [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
-    [self startDownload:ID];
-    
-    
+    [task resume];
+
 }
 
-/**
- *  开始下载
- */
-- (void)startDownload:(NSString *)ID
+- (void)handle:(NSString *)ID
 {
     NSURLSessionDataTask *task = [self getTask:ID];
-    [task resume];
-    
-//    [self getSessionModel:task.taskIdentifier].stateBlock(DownloadStateStart);
+    XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
+
+    if (mediaFile.state == MediaFileStateStart) {
+        [self pause:ID];
+    }
 }
+
+
+/**
+ *  暂停下载
+ */
+- (void)pause:(NSString *)ID
+{
+    NSURLSessionDataTask *task = [self getTask:ID];
+    [task cancel];
+    XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
+    mediaFile.state = MediaFileStateSuspended;
+}
+
+
 
 /**
  *  根据ID获得对应的下载任务
@@ -144,14 +171,8 @@ didReceiveResponse:(NSURLResponse *)response
     [mediaFile.stream open];
     
     // 获得服务器这次请求 返回数据的总长度
-    NSInteger totalLength = response.expectedContentLength + [self fileSizeForPath:mediaFile.ID];
+    NSInteger totalLength = response.expectedContentLength + mediaFile.downloadedBytes;
     mediaFile.totalLength = totalLength;
-    
-//    // 存储总长度
-//    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:HSTotalLengthFullpath];
-//    if (dict == nil) dict = [NSMutableDictionary dictionary];
-//    dict[HSFileName(sessionModel.url)] = @(totalLength);
-//    [dict writeToFile:HSTotalLengthFullpath atomically:YES];
     
     // 接收这个请求，允许接收服务器的数据
     completionHandler(NSURLSessionResponseAllow);
@@ -174,8 +195,7 @@ didReceiveResponse:(NSURLResponse *)response
     NSUInteger progress = (int)(receivedSize/ expectedSize*100);
     NSLog(@"progress = %%%ld",progress);
 
-    
-//    sessionModel.progressBlock(receivedSize, expectedSize, progress);
+    mediaFile.progressBlock(receivedSize, expectedSize, progress);
 }
 
 /**
@@ -183,7 +203,20 @@ didReceiveResponse:(NSURLResponse *)response
  */
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    NSLog(@"finish");
+    XHMediaFile *mediaFile = [self getMediaFile:task.taskIdentifier];
+    if (error) {
+        mediaFile.state = MediaFileStateFailed;
+    } else {
+        mediaFile.state = MediaFileStateCompleted;
+    }
+        
+    // 关闭流
+    [mediaFile.stream close];
+     mediaFile.stream = nil;
+    
+    // 清除任务
+    [self.tasks removeObjectForKey:mediaFile.ID];
+    [self.mediaFiles removeObjectForKey:@(task.taskIdentifier).stringValue];
 }
 
 @end

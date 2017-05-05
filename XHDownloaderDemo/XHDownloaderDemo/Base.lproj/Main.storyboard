@@ -30,9 +30,17 @@
                                     <action selector="download:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xIg-Qk-azM"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rwb-PY-105">
+                                <rect key="frame" x="112" y="176" width="150" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <connections>
+                        <outlet property="button" destination="oiG-xp-WYm" id="i0C-6O-IhR"/>
+                        <outlet property="progressBar" destination="Rwb-PY-105" id="Yxu-08-XeJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

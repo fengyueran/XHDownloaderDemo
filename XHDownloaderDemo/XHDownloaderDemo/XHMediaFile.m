@@ -10,4 +10,10 @@
 
 @implementation XHMediaFile
 
+- (void)setState:(MediaFileState)state {
+    _state = state;
+    _stateBlock(_state);
+    
+}
+
 @end
