@@ -261,6 +261,7 @@
 				TargetAttributes = {
 					E720732A1EAF67D300A3B879 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 6AJDWB8L9G;
 						ProvisioningStyle = Automatic;
 					};
 					E72073431EAF67D300A3B879 = {
@@ -486,7 +487,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6AJDWB8L9G;
 				INFOPLIST_FILE = XHDownloaderDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-.XHDownloaderDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -497,7 +500,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6AJDWB8L9G;
 				INFOPLIST_FILE = XHDownloaderDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-.XHDownloaderDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
