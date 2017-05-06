@@ -13,17 +13,22 @@
 #import "NSString+Hash.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UIButton *button;
-@property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+- (IBAction)deleteAll:(id)sender;
 
 @property (strong, nonatomic) NSMutableArray *urls;
 
-- (IBAction)download:(id)sender;
 
 @end
 
 @implementation ViewController
+
+- (IBAction)deleteAll:(id)sender {
+    [[XHFileManager sharedInstance] deleteAll];
+    [self.urls removeAllObjects];
+    [self.tableView reloadData];
+}
 
 - (NSMutableArray *)urls
 {
@@ -40,28 +45,6 @@
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"XHCELL"];
-}
-
-
-
-#pragma mark 按钮状态
-- (NSString *)getTitleWithDownloadState:(MediaFileState)state {
-    switch (state) {
-        case MediaFileStateDownloading:
-            return @"下载中";
-        case MediaFileStateFailed:
-        case MediaFileStateSuspended:
-            return @"暂停";
-        case MediaFileStatePending:
-            return @"等待下载";
-        case MediaFileStateCompleted:
-            return @"完成";
-        default:
-            break;
-    }
-    return @"false";
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -96,23 +79,6 @@
     NSString *url = self.urls[indexPath.row];
     [[XHFileManager sharedInstance]deleteByID:url.md5String];
     [self.urls removeObjectAtIndex:indexPath.row];
-//    NSArray *deleteArr = self.categoryMedia[indexPath.row - self.specialRows];
-//    for (MediaFile *mf in deleteArr) {
-//        [self.mediaManager deleteByID:mf.ID];
-//    }
-//    
-//    NSMutableArray* newarr = [[NSMutableArray alloc] initWithArray:self.categoryMedia];
-//    [newarr removeObjectAtIndex:indexPath.row - self.specialRows];
-//    self.categoryMedia = newarr;
-//    
-//    [self.downloadedMainCell updateDownloadFilesNum:self.completedCount];
-//    if (self.completedCount == 0) {
-//        NSIndexPath *mainCellIndexPath = [self.tableView indexPathForCell:self.tableView.visibleCells[self.specialRows]];
-//        [tableView deleteRowsAtIndexPaths:@[mainCellIndexPath,indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-//        [self allDownloadedFilesDeleted];
-//        return;
-//    }
-//    
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 

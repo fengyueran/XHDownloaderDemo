@@ -20,5 +20,6 @@
 - (NSDictionary*)loadFile:(NSString*)ID;
 - (void)forceSaveAll;
 - (void)cleanByID:(NSString*)ID;
+- (void)cleanAll;
 
 @end

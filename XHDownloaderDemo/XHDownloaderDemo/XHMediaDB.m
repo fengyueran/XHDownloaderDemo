@@ -111,4 +111,10 @@
     [fm removeItemAtPath:filePath error:nil];
     [self doSave];
 }
+
+- (void)cleanAll {
+  NSFileManager *fm = [NSFileManager new];
+  [fm removeItemAtPath:self.pathRoot error:nil];
+    
+}
 @end

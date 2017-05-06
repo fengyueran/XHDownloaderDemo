@@ -90,7 +90,11 @@
     [self.delegate deleteTask:ID];
 
 }
-
+- (void)deleteAll {
+    self.mediaFiles = nil;
+    [self.db cleanAll];
+    [self.delegate deleteAllTask];
+}
 
 - (NSMutableDictionary *)getMediaInfoWithDB:(XHMediaDB *)db {
     NSDictionary* all = [db loadProject];

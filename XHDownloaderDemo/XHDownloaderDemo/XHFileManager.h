@@ -11,6 +11,7 @@
 
 @protocol DeleteWorkDelegate
 - (void)deleteTask:(NSString *)ID;
+- (void)deleteAllTask;
 @end
 
 @interface XHFileManager : NSObject
@@ -26,4 +27,6 @@
 - (void)forceSaveAll;
 - (int)runningCount;
 - (void)deleteByID:(NSString*)ID;
+- (void)deleteAll;
+
 @end

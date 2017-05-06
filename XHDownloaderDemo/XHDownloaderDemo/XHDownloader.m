@@ -177,6 +177,13 @@
 - (void)deleteTask:(NSString *)ID {
     [self pause:ID];
 }
+
+- (void)deleteAllTask {
+    for (NSURLSessionDataTask *task in self.tasks) {
+        [task cancel];
+    }
+}
+
 #pragma mark NSURLSessionDataDelegate
 
 /**
