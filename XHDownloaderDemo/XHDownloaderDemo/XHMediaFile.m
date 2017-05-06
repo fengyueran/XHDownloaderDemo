@@ -10,16 +10,18 @@
 
 @implementation XHMediaFile
 
-- (void)setState:(MediaFileState)state {
+- (void)stateChange:(MediaFileState)state {
     _state = state;
     _stateBlock(_state);
-    
 }
 - (instancetype)initWithDictionary:(NSDictionary *)dic {
     self = [super init];
     NSDictionary *info = dic[@"info"];
     if (self) {
         [self setValuesForKeysWithDictionary:info];
+        if (_state == MediaFileStateDownloading) {
+            _state = MediaFileStateSuspended;
+        }
     }
     return self;
 }
@@ -34,6 +36,7 @@
     dict[@"downloadedBytes"] = [[NSNumber alloc] initWithLongLong:self.downloadedBytes];
     dict[@"progress"] = [[NSNumber alloc] initWithFloat:self.progress];
     dict[@"completed"] = [[NSNumber alloc] initWithBool:self.completed];
+    dict[@"state"] = [[NSNumber alloc]initWithInt:self.state];
     dict[@"url"] = self.url;
 
     return dict;

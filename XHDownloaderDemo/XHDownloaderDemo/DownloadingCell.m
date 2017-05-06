@@ -50,12 +50,25 @@
 	NSString* progressStr = [NSString stringWithFormat:@"%%%ld",progress];
 	self.progressLabel.text = progressStr;
 	self.progressView.progress = mf.progress;
-    if (mf.completed) {
-        self.downloadStateLabel.text = @"完成";
-    } else {
-        self.downloadStateLabel.text = @"暂停";
-    }
+
+    self.downloadStateLabel.text = [self getState:mf.state];
+
 }
 
+- (NSString *)getState:(MediaFileState)state {
+    switch (state) {
+        case MediaFileStateDownloading:
+            return @"下载中";
+        case MediaFileStateFailed:
+        case MediaFileStateSuspended:
+            return @"暂停";
+        case MediaFileStatePending:
+            return @"等待下载";
+        case MediaFileStateCompleted:
+            return @"完成";
+        default:
+            break;
+    }
+}
 
 @end

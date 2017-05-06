@@ -22,7 +22,7 @@
 
 - (instancetype)init {
     self = [super init];
-    [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(doSave) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(doSave) userInfo:nil repeats:YES];
     self.fileProviders = [NSMutableDictionary new];
     return self;
 }
@@ -39,17 +39,24 @@
 	NSError* error = nil;
 	[stream open];
 	NSDictionary* json = [NSJSONSerialization JSONObjectWithStream: stream options:NSJSONReadingMutableContainers error: &error];
-	NSLog(@"%@", json);
+	
     [stream close];
 	if (json == nil) {
 		return [NSDictionary new];
-	}
+    } else {
+        NSLog(@"%@", json);
+    }
 	return json;
 }
 
 - (NSString *)filesPath {
     return [self.pathRoot stringByAppendingPathComponent:@"files.json"];
 }
+
+- (NSString *)fileInfoWithID:(NSString *)ID {
+    return [self.pathRoot stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", ID]];
+}
+
 - (void)saveProject:(XHFileManager *) mm {
     self.projectProvider = mm;
 }
@@ -59,8 +66,7 @@
 }
 
 - (NSDictionary*)loadFile:(NSString*)ID {
-    NSString* infoPath = [self.pathRoot stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", ID]];
-    NSInputStream* stream = [NSInputStream inputStreamWithFileAtPath:infoPath];
+    NSInputStream* stream = [NSInputStream inputStreamWithFileAtPath:[self fileInfoWithID:ID]];
     NSError* error = nil;
     [stream open];
     NSDictionary* json = [NSJSONSerialization JSONObjectWithStream: stream options:NSJSONReadingMutableContainers error: &error];
@@ -73,8 +79,7 @@
     NSMutableDictionary* fileProviders = [self.fileProviders mutableCopy];
     for (NSString* ID in fileProviders) {
         XHMediaFile* provider = self.fileProviders[ID];
-        NSString* infoPath = [self.pathRoot stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", ID]];
-        NSOutputStream* stream = [NSOutputStream outputStreamToFileAtPath:infoPath append:NO];
+        NSOutputStream* stream = [NSOutputStream outputStreamToFileAtPath:[self fileInfoWithID:ID] append:NO];
         [stream open];
         NSError* error = NULL;
 //        if (self.projectProvider != nil && [self.projectProvider getMediaByID:ID] == nil) {
@@ -99,4 +104,11 @@
     [self doSave];
 }
 
+- (void)cleanByID:(NSString*)ID {
+    NSFileManager *fm = [NSFileManager new];
+    [fm removeItemAtPath:[self fileInfoWithID:ID] error:nil];
+    NSString *filePath = [self.pathRoot stringByAppendingPathComponent:ID];
+    [fm removeItemAtPath:filePath error:nil];
+    [self doSave];
+}
 @end

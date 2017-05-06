@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "XHMediaFile.h"
 
+@protocol DeleteWorkDelegate
+- (void)deleteTask:(NSString *)ID;
+@end
+
 @interface XHFileManager : NSObject
+
+@property (weak, nonatomic) id<DeleteWorkDelegate> delegate;
 
 + (instancetype)sharedInstance;
 - (NSDictionary*) getJSONObject;
@@ -19,4 +25,5 @@
 - (XHMediaFile*)getMediaByID:(NSString*)ID;
 - (void)forceSaveAll;
 - (int)runningCount;
+- (void)deleteByID:(NSString*)ID;
 @end

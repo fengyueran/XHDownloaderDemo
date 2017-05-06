@@ -35,7 +35,6 @@
     if (self) {
         _db = [[XHMediaDB alloc]initWithPathRoot:[XHDownloaderConf pathRoot]];
         _mediaFiles = [self getMediaInfoWithDB:_db];
-        
     }
     return self;
 }
@@ -83,6 +82,15 @@
     }
     return count;
 }
+
+- (void)deleteByID:(NSString*)ID {
+    [self.mediaFiles removeObjectForKey:ID];
+    [self.db saveProject:self];
+    [self.db cleanByID:ID];
+    [self.delegate deleteTask:ID];
+
+}
+
 
 - (NSMutableDictionary *)getMediaInfoWithDB:(XHMediaDB *)db {
     NSDictionary* all = [db loadProject];

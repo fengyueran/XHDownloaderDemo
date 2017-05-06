@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "XHFileManager.h"
 #import "XHDownloader.h"
 #import "DownloadingCell.h"
 #import "NSString+Hash.h"
@@ -88,6 +89,31 @@
             [cell updateStatus];
         });
     }];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *url = self.urls[indexPath.row];
+    [[XHFileManager sharedInstance]deleteByID:url.md5String];
+    [self.urls removeObjectAtIndex:indexPath.row];
+//    NSArray *deleteArr = self.categoryMedia[indexPath.row - self.specialRows];
+//    for (MediaFile *mf in deleteArr) {
+//        [self.mediaManager deleteByID:mf.ID];
+//    }
+//    
+//    NSMutableArray* newarr = [[NSMutableArray alloc] initWithArray:self.categoryMedia];
+//    [newarr removeObjectAtIndex:indexPath.row - self.specialRows];
+//    self.categoryMedia = newarr;
+//    
+//    [self.downloadedMainCell updateDownloadFilesNum:self.completedCount];
+//    if (self.completedCount == 0) {
+//        NSIndexPath *mainCellIndexPath = [self.tableView indexPathForCell:self.tableView.visibleCells[self.specialRows]];
+//        [tableView deleteRowsAtIndexPaths:@[mainCellIndexPath,indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+//        [self allDownloadedFilesDeleted];
+//        return;
+//    }
+//    
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 @end

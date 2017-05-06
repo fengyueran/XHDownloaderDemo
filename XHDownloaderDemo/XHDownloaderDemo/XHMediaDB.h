@@ -19,5 +19,6 @@
 - (void)saveFile:(XHMediaFile*)mf;
 - (NSDictionary*)loadFile:(NSString*)ID;
 - (void)forceSaveAll;
+- (void)cleanByID:(NSString*)ID;
 
 @end

@@ -13,7 +13,7 @@
 
 
 
-@interface XHDownloader ()<NSURLSessionDataDelegate>
+@interface XHDownloader ()<NSURLSessionDataDelegate, DeleteWorkDelegate>
 
 @property (strong, nonatomic) NSURLSession *session;
 @property (strong, nonatomic) NSString *cacheDir;
@@ -47,6 +47,7 @@
         _maxDownloads = 2;
         _cacheDir = [XHDownloaderConf pathRoot];
         _fm = [XHFileManager sharedInstance];
+        _fm.delegate = self;
         
     }
     return self;
@@ -107,9 +108,9 @@
     [self.fm saveFile:mediaFile];
     [self.fm saveID:mediaFile];
     if ([self.fm runningCount] >= _maxDownloads) {
-        mediaFile.state = MediaFileStatePending;
+        [mediaFile stateChange:MediaFileStatePending];
     } else {
-         mediaFile.state = MediaFileStateDownloading;
+        [mediaFile stateChange:MediaFileStateDownloading];
         [task resume];
     }
    
@@ -119,7 +120,7 @@
     for (NSString* key in self.mediaFiles) {
         XHMediaFile* mf = [self.mediaFiles objectForKey:key];
         if (mf.state == MediaFileStatePending && [self.fm runningCount] < 2) {
-            mf.state = MediaFileStateDownloading;
+            [mf stateChange:MediaFileStateDownloading];
             NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
             [task resume];
              [self.fm saveID:mf];
@@ -151,7 +152,7 @@
     NSURLSessionDataTask *task = [self getTask:ID];
     [task cancel];
     XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
-    mediaFile.state = MediaFileStateSuspended;
+    [mediaFile stateChange:MediaFileStateSuspended];
     [self launchNextTask];
 }
 
@@ -173,7 +174,9 @@
     return (XHMediaFile *)[self.mediaFiles valueForKey:@(taskIdentifier).stringValue];
 }
 
-
+- (void)deleteTask:(NSString *)ID {
+    [self pause:ID];
+}
 #pragma mark NSURLSessionDataDelegate
 
 /**
@@ -226,9 +229,9 @@ didReceiveResponse:(NSURLResponse *)response
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     XHMediaFile *mediaFile = [self getMediaFile:task.taskIdentifier];
     if (error) {
-        mediaFile.state = MediaFileStateFailed;
+        [mediaFile stateChange:MediaFileStateFailed];
     } else {
-        mediaFile.state = MediaFileStateCompleted;
+        [mediaFile stateChange:MediaFileStateCompleted];
         mediaFile.completed = YES;
         [self.fm saveFile:mediaFile];
         [self.fm forceSaveAll];
