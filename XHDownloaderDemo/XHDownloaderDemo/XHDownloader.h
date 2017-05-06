@@ -16,8 +16,9 @@ typedef void(^XHDownloaderStateBlock)( MediaFileState state);
 @interface XHDownloader : NSObject
 
 + (instancetype)sharedInstance;
-
+- (NSArray*)getMedia;
 - (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
                   state:(XHDownloaderStateBlock)stateBlock;
+
 @end

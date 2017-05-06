@@ -19,16 +19,22 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 
 @interface XHMediaFile : NSObject
 @property (nonatomic, strong) NSString *ID;
+@property (nonatomic, strong) NSString *url;
 /** 流 */
 @property (nonatomic, strong) NSOutputStream *stream;
 /** 数据的总长度 */
 @property (nonatomic, assign) long long totalLength;
 /** 已下载的数据大小 */
 @property (nonatomic, assign) long long downloadedBytes;
+@property (nonatomic, assign) NSInteger progress;
 /** 文件状态 */
 @property (nonatomic, assign) MediaFileState state;
+@property (nonatomic, strong) NSDate* addDate;
+@property (nonatomic, assign) BOOL completed;
 /** 下载进度 */
 @property (nonatomic, copy) void(^progressBlock)(long long receivedSize, long long expectedSize, NSInteger progress);
 /** 下载状态 */
 @property (nonatomic, copy) void(^stateBlock)(MediaFileState MediaFileState);
+
+- (NSDictionary*) getJSONObject;
 @end

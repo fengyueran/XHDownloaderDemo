@@ -28,7 +28,7 @@
                             <constraint firstAttribute="width" constant="90" id="zah-BY-Tg8"/>
                         </constraints>
                     </imageView>
-                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2rN-Wf-fLg">
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2rN-Wf-fLg">
                         <rect key="frame" x="110" y="51" width="202" height="2"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="2" id="EqK-Rr-civ"/>
