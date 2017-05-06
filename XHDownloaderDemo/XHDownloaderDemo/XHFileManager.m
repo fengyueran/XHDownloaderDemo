@@ -13,7 +13,7 @@
 
 @interface XHFileManager ()
 
-@property (strong, nonatomic) NSMutableDictionary *mediaInfo;
+@property (strong, nonatomic) NSMutableDictionary *mediaFiles;
 @property (strong, nonatomic) XHMediaDB *db;
 
 @end
@@ -34,7 +34,7 @@
     self = [super init];
     if (self) {
         _db = [[XHMediaDB alloc]initWithPathRoot:[XHDownloaderConf pathRoot]];
-        _mediaInfo = [self getMediaInfoWithDB:_db];
+        _mediaFiles = [self getMediaInfoWithDB:_db];
         
     }
     return self;
@@ -62,27 +62,48 @@
 }
 - (void)saveID:(XHMediaFile*) mf {
     [self.db saveProject:self];
-    [self.mediaInfo setObject:mf forKey:mf.ID];
+    [self.mediaFiles setObject:mf forKey:mf.ID];
+}
+
+- (void)forceSaveAll {
+    [self.db forceSaveAll];
+}
+
+- (XHMediaFile*)getMediaByID:(NSString*)ID {
+    return self.mediaFiles[ID];
+}
+
+- (int)runningCount {
+    int count = 0;
+    for (NSString* key in self.mediaFiles) {
+        XHMediaFile* mf = [self.mediaFiles objectForKey:key];
+        if (mf.state == MediaFileStateDownloading) {
+            count++;
+        }
+    }
+    return count;
 }
 
 - (NSMutableDictionary *)getMediaInfoWithDB:(XHMediaDB *)db {
     NSDictionary* all = [db loadProject];
     NSArray* items = all[@"list"];
-    NSMutableDictionary *mediaInfo = [NSMutableDictionary new];
+    NSMutableDictionary *mediaFiles = [NSMutableDictionary new];
     
     for(NSString* ID in items) {
         NSDictionary* value = [db loadFile:ID];
         if (value != nil) {
-            [mediaInfo setObject:value forKey:ID];
+            XHMediaFile* mf = [[XHMediaFile alloc]initWithDictionary:value];
+            if (mf == nil) continue;
+            [mediaFiles setObject:mf forKey:ID];
         }
     }
-    return mediaInfo;
+    return mediaFiles;
     
 }
 
 - (NSDictionary*) getJSONObject {
     NSMutableDictionary* all = [NSMutableDictionary new];
-    [all setObject:self.mediaInfo.allKeys  forKey:@"list"];
+    [all setObject:self.mediaFiles.allKeys  forKey:@"list"];
     return all;
 }
 

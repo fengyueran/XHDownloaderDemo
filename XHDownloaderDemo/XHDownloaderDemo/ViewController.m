@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "XHDownloader.h"
 #import "DownloadingCell.h"
+#import "NSString+Hash.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIButton *button;
@@ -27,7 +28,7 @@
 {
     if (!_urls) {
         self.urls = [NSMutableArray array];
-        for (int i = 1; i<=10; i++) {
+        for (int i = 2; i<=10; i++) {
             [self.urls addObject:[NSString stringWithFormat:@"http://120.25.226.186:32812/resources/videos/minion_%02d.mp4", i]];
         }
     }
@@ -59,7 +60,7 @@
             break;
     }
     return @"false";
-
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -68,23 +69,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DownloadingCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"DownloadingCell" owner:nil options:nil] firstObject];
+    cell.ID = ((NSString *)self.urls[indexPath.row]).md5String;
+    [cell updateStatus];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *url = self.urls[indexPath.row];
-     DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [[XHDownloader sharedInstance] downloadWithURL:url progress:^(long long receivedSize, long long expectedSize, NSInteger speed) {
         dispatch_async(dispatch_get_main_queue(), ^{
-           
-            cell.progressLabel.text = [NSString stringWithFormat:@"%f",1.0 * receivedSize/expectedSize];
-           
+            [cell updateStatus];
+            
         });
         
     } state:^(MediaFileState state) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            cell.downloadStateLabel.text = [self getTitleWithDownloadState:state];
-                   });
+            [cell updateStatus];
+        });
     }];
 }
 

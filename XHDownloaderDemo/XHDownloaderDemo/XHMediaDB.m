@@ -22,7 +22,7 @@
 
 - (instancetype)init {
     self = [super init];
-    [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(doSave) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(doSave) userInfo:nil repeats:YES];
     self.fileProviders = [NSMutableDictionary new];
     return self;
 }
@@ -70,7 +70,8 @@
 }
 
 - (void) doSave {
-    for (NSString* ID in self.fileProviders) {
+    NSMutableDictionary* fileProviders = [self.fileProviders mutableCopy];
+    for (NSString* ID in fileProviders) {
         XHMediaFile* provider = self.fileProviders[ID];
         NSString* infoPath = [self.pathRoot stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.json", ID]];
         NSOutputStream* stream = [NSOutputStream outputStreamToFileAtPath:infoPath append:NO];

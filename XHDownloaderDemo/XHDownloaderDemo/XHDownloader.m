@@ -56,63 +56,60 @@
 - (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
                   state:(XHDownloaderStateBlock)stateBlock {
-
     
     NSString *ID = url.md5String;
     
-    // 暂停
-    if ([self.tasks valueForKey:ID]) {
-        [self handle:ID];
-        return;
+    if ([self isNewTask:ID]) {
+        // 创建流
+        NSString *cachePath = [_cacheDir stringByAppendingPathComponent:ID];
+        NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:cachePath append:YES];
+        
+        // 创建请求
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+        
+        //获取已下载的文件长度
+        long long downloadedBytes = [self.fm fileSizeForPath:cachePath];
+        
+        
+        // 设置请求头
+        NSString *range = [NSString stringWithFormat:@"bytes=%zd-",downloadedBytes];
+        [request setValue:range forHTTPHeaderField:@"Range"];
+        
+        
+        // 创建一个Data任务
+        
+        NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
+        NSUInteger taskIdentifier = arc4random() % ((arc4random() % 10000 + arc4random() % 10000));
+        [task setValue:@(taskIdentifier) forKeyPath:@"taskIdentifier"];
+        
+        // 保存任务
+        [self.tasks setValue:task forKey:ID];
+        
+        XHMediaFile *mediaFile = [[XHMediaFile alloc]init];
+        mediaFile.url = url;
+        mediaFile.stream = stream;
+        mediaFile.downloadedBytes = downloadedBytes;
+        mediaFile.stateBlock = stateBlock;
+        mediaFile.progressBlock = progressBlock;
+        mediaFile.addDate = [NSDate date];
+        
+        mediaFile.ID = ID;
+        [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
+        
+        [self queueTask:mediaFile task:task];
     }
     
-    // 创建流
-    NSString *cachePath = [_cacheDir stringByAppendingPathComponent:ID];
-    NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:cachePath append:YES];
-    
-    // 创建请求
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
-    
-    //获取已下载的文件长度
-    long long downloadedBytes = [self.fm fileSizeForPath:cachePath];
-    
-    
-    // 设置请求头
-    NSString *range = [NSString stringWithFormat:@"bytes=%zd-",downloadedBytes];
-    [request setValue:range forHTTPHeaderField:@"Range"];
-    
-    
-    // 创建一个Data任务
-    
-    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
-    NSUInteger taskIdentifier = arc4random() % ((arc4random() % 10000 + arc4random() % 10000));
-    [task setValue:@(taskIdentifier) forKeyPath:@"taskIdentifier"];
-    
-    // 保存任务
-    [self.tasks setValue:task forKey:ID];
-    
-    XHMediaFile *mediaFile = [[XHMediaFile alloc]init];
-    mediaFile.url = url;
-    mediaFile.stream = stream;
-    mediaFile.downloadedBytes = downloadedBytes;
-    mediaFile.stateBlock = stateBlock;
-    mediaFile.progressBlock = progressBlock;
-    mediaFile.addDate = [NSDate date];
-    
-    mediaFile.ID = ID;
-    [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
 
-    [self queueTask:mediaFile task:task];
 
 }
 
 - (void)queueTask:(XHMediaFile *)mediaFile task:(NSURLSessionDataTask *)task {
-    if ([self runningCount] >= _maxDownloads) {
+    [self.fm saveFile:mediaFile];
+    [self.fm saveID:mediaFile];
+    if ([self.fm runningCount] >= _maxDownloads) {
         mediaFile.state = MediaFileStatePending;
     } else {
          mediaFile.state = MediaFileStateDownloading;
-        [self.fm saveFile:mediaFile];
-        [self.fm saveID:mediaFile];
         [task resume];
     }
    
@@ -121,7 +118,7 @@
 - (void)launchNextTask {
     for (NSString* key in self.mediaFiles) {
         XHMediaFile* mf = [self.mediaFiles objectForKey:key];
-        if (mf.state == MediaFileStatePending && [self runningCount] < 2) {
+        if (mf.state == MediaFileStatePending && [self.fm runningCount] < 2) {
             mf.state = MediaFileStateDownloading;
             NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
             [task resume];
@@ -132,14 +129,17 @@
     
 }
 
-- (void)handle:(NSString *)ID
-{
-    NSURLSessionDataTask *task = [self getTask:ID];
-    XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
-
-    if (mediaFile.state == MediaFileStateDownloading) {
-        [self pause:ID];
+- (BOOL)isNewTask:(NSString *)ID {
+      XHMediaFile *mediaFile =  [self.fm getMediaByID:ID];
+    if (mediaFile) {
+        if (mediaFile.state == MediaFileStateDownloading) {
+            [self pause:ID];
+            return NO;
+        } else if (mediaFile.state == MediaFileStateCompleted) {
+            return NO;
+        }
     }
+    return YES;
 }
 
 
@@ -152,6 +152,7 @@
     [task cancel];
     XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
     mediaFile.state = MediaFileStateSuspended;
+    [self launchNextTask];
 }
 
 
@@ -172,16 +173,6 @@
     return (XHMediaFile *)[self.mediaFiles valueForKey:@(taskIdentifier).stringValue];
 }
 
-- (int)runningCount {
-    int count = 0;
-    for (NSString* key in self.mediaFiles) {
-        XHMediaFile* mf = [self.mediaFiles objectForKey:key];
-        if (mf.state == MediaFileStateDownloading) {
-            count++;
-        }
-    }
-    return count;
-}
 
 #pragma mark NSURLSessionDataDelegate
 
@@ -199,8 +190,8 @@ didReceiveResponse:(NSURLResponse *)response
     [mediaFile.stream open];
     
     // 获得服务器这次请求 返回数据的总长度
-    NSInteger totalLength = response.expectedContentLength + mediaFile.downloadedBytes;
-    mediaFile.totalLength = totalLength;
+    NSInteger totalSize = response.expectedContentLength + mediaFile.downloadedBytes;
+    mediaFile.totalSize = totalSize;
     
     // 接收这个请求，允许接收服务器的数据
     completionHandler(NSURLSessionResponseAllow);
@@ -219,12 +210,12 @@ didReceiveResponse:(NSURLResponse *)response
     
     // 下载进度
     double receivedSize = mediaFile.downloadedBytes;
-    double expectedSize = mediaFile.totalLength;
+    double expectedSize = mediaFile.totalSize;
     NSUInteger progress = (int)(receivedSize/ expectedSize*100);
     NSLog(@"progress = %%%ld",progress);
 
     mediaFile.progressBlock(receivedSize, expectedSize, progress);
-    mediaFile.progress = progress;
+    mediaFile.progress = progress * 0.01;
     [self.fm saveFile:mediaFile];
 }
 
@@ -240,6 +231,7 @@ didReceiveResponse:(NSURLResponse *)response
         mediaFile.state = MediaFileStateCompleted;
         mediaFile.completed = YES;
         [self.fm saveFile:mediaFile];
+        [self.fm forceSaveAll];
         [self launchNextTask];
     }
         

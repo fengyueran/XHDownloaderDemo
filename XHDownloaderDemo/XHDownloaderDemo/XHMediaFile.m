@@ -15,13 +15,22 @@
     _stateBlock(_state);
     
 }
+- (instancetype)initWithDictionary:(NSDictionary *)dic {
+    self = [super init];
+    NSDictionary *info = dic[@"info"];
+    if (self) {
+        [self setValuesForKeysWithDictionary:info];
+    }
+    return self;
+}
+
 
 - (NSDictionary*) toDictionary {
     NSMutableDictionary* dict = [NSMutableDictionary new];
     dict[@"ID"] = self.ID;
 //    dict[@"name"] = self.name;
     dict[@"addDate"] = [self stringFromDate:self.addDate];
-    dict[@"totalSize"] = [[NSNumber alloc] initWithLongLong:self.totalLength];
+    dict[@"totalSize"] = [[NSNumber alloc] initWithLongLong:self.totalSize];
     dict[@"downloadedBytes"] = [[NSNumber alloc] initWithLongLong:self.downloadedBytes];
     dict[@"progress"] = [[NSNumber alloc] initWithFloat:self.progress];
     dict[@"completed"] = [[NSNumber alloc] initWithBool:self.completed];

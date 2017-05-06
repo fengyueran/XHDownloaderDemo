@@ -16,7 +16,7 @@
 - (unsigned long long)fileSizeForPath:(NSString *)path;
 - (void)saveFile:(XHMediaFile*) mf;
 - (void)saveID:(XHMediaFile*) mf;
-
-
-
+- (XHMediaFile*)getMediaByID:(NSString*)ID;
+- (void)forceSaveAll;
+- (int)runningCount;
 @end

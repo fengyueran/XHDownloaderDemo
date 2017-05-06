@@ -7,9 +7,8 @@
 ////
 //
 #import "DownloadingCell.h"
-//#import "CommonHelper.h"
-//#import "MediaManager.h"
-//#import "MediaFile.h"
+#import "XHFileManager.h"
+#import "XHMediaFile.h"
 //#import "UIImageView+WebCache.h"
 //#import "DownloadErrorCode.h"
 //
@@ -35,73 +34,28 @@
 	[super awakeFromNib];
 
 }
-//
-//- (MediaFile*) mf {
-//	return [[MediaManager sharedInstance] getMediaByID:self.ID];
-//}
-//
-//- (void) updateStatus {
-//	MediaFile* mf = self.mf;
-//	if (mf == nil) {
-//		return;
-//	}
-//
+
+- (XHMediaFile*) mf {
+	return [[XHFileManager sharedInstance] getMediaByID:self.ID];
+}
+
+- (void) updateStatus {
+	XHMediaFile* mf = self.mf;
+	if (mf == nil) {
+		return;
+	}
+
 //	self.fileNameLabel.text = mf.info.name;
-//
-//    if (!_thumbnailSet && mf.thumbnailURL) {
-//        if (mf.info.poster.absoluteString.length > 0) {
-//            [self.thumbnailImageView sd_setImageWithURL:mf.info.poster completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//                if (!image) {
-//                    [self.thumbnailImageView sd_setImageWithURL:mf.thumbnailURL placeholderImage:[UIImage imageNamed:@"thumbnail.png"]];
-//                }
-//            }];
-//        } else {
-//            [self.thumbnailImageView sd_setImageWithURL:mf.thumbnailURL placeholderImage:[UIImage imageNamed:@"thumbnail.png"]];
-//        }
-//        _thumbnailSet = YES;
-//    }
-//    
-//	NSString* progressStr = [CommonHelper getProgressString:mf.info.progress];
-//	self.progressLabel.text = [CommonHelper getFileSizeString:mf.info.sinfo.downloadedBytes];
-//	self.progressView.progress = mf.info.progress;
-//
-//	if (_lastState != mf.state) {
-//		_lastState = mf.state;
-//		self.speedLabel.text = @"";
-//
-//		switch (mf.state) {
-//			case 0:
-//				self.downloadStateLabel.text = [NSString stringWithFormat:@"%@ (%@)", TRANS(@"Pause"), progressStr];
-//				self.maskView.hidden = NO;
-//				break;
-//			case 1:
-//				self.maskView.hidden = YES;
-//				break;
-//			case 2:
-//				self.downloadStateLabel.text = TRANS(@"Queueing");
-//				self.maskView.hidden = YES;
-//				break;
-//			case 3:
-//				self.downloadStateLabel.text = TRANS(@"Play");
-//				break;
-//			default:
-//				self.downloadStateLabel.text = @"";
-//				break;
-//		}
-//	}
-//
-//	if (mf.state == 1) {
-//		self.downloadStateLabel.text = [NSString stringWithFormat:@"%@ (%@)", TRANS(@"Downloading"), progressStr];
-//		self.speedLabel.text = [CommonHelper getSpeedString:[mf calculateDownloadSpeed]];
-//	}
-//
-//	if (mf.info.lastErrorCode == DownloadErrorCode404) {
-//		self.downloadStateLabel.text = TRANS(@"Video link is dead");
-//		self.fileNameLabel.textColor = self.downloadStateLabel.textColor;
-//		self.downloadStateLabel.textColor = [UIColor redColor];
-//	}
-//
-//}
-//
+    NSUInteger progress = (int)(mf.progress*100);
+	NSString* progressStr = [NSString stringWithFormat:@"%%%ld",progress];
+	self.progressLabel.text = progressStr;
+	self.progressView.progress = mf.progress;
+    if (mf.completed) {
+        self.downloadStateLabel.text = @"完成";
+    } else {
+        self.downloadStateLabel.text = @"暂停";
+    }
+}
+
 
 @end

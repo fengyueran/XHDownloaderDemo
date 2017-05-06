@@ -23,10 +23,10 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 /** 流 */
 @property (nonatomic, strong) NSOutputStream *stream;
 /** 数据的总长度 */
-@property (nonatomic, assign) long long totalLength;
+@property (nonatomic, assign) long long totalSize;
 /** 已下载的数据大小 */
 @property (nonatomic, assign) long long downloadedBytes;
-@property (nonatomic, assign) NSInteger progress;
+@property (nonatomic, assign) float progress;
 /** 文件状态 */
 @property (nonatomic, assign) MediaFileState state;
 @property (nonatomic, strong) NSDate* addDate;
@@ -37,4 +37,5 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 @property (nonatomic, copy) void(^stateBlock)(MediaFileState MediaFileState);
 
 - (NSDictionary*) getJSONObject;
+- (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end
