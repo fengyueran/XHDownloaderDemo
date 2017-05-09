@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSURLSession *session;
 @property (strong, nonatomic) NSString *cacheDir;
 @property (nonatomic, strong) NSMutableDictionary *tasks;
+@property (nonatomic, strong) NSArray* sortFiles;
+@property (nonatomic, assign) BOOL sortDirty;
 @property (nonatomic, assign) NSUInteger maxDownloads;
 
 @property (nonatomic, strong) XHFileManager* fm;
@@ -43,11 +45,13 @@
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         _session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
         _mediaFiles = [NSMutableDictionary dictionary];
+        _sortFiles = [NSArray array];
         _tasks = [NSMutableDictionary dictionary];
         _maxDownloads = 2;
         _cacheDir = [XHDownloaderConf pathRoot];
         _fm = [XHFileManager sharedInstance];
         _fm.delegate = self;
+        _sortDirty = YES;
         
     }
     return self;
@@ -105,6 +109,7 @@
 }
 
 - (void)queueTask:(XHMediaFile *)mediaFile task:(NSURLSessionDataTask *)task {
+     self.sortDirty = YES;
     [self.fm saveFile:mediaFile];
     [self.fm saveID:mediaFile];
     if ([self.fm runningCount] >= _maxDownloads) {
@@ -112,13 +117,15 @@
     } else {
         [mediaFile stateChange:MediaFileStateDownloading];
         [task resume];
+       
     }
    
 }
 
 - (void)launchNextTask {
-    for (NSString* key in self.mediaFiles) {
-        XHMediaFile* mf = [self.mediaFiles objectForKey:key];
+    self.sortFiles = [self getSortedMedia];
+    self.sortDirty = NO;
+    for (XHMediaFile* mf in self.sortFiles) {
         if (mf.state == MediaFileStatePending && [self.fm runningCount] < 2) {
             [mf stateChange:MediaFileStateDownloading];
             NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
@@ -128,6 +135,16 @@
         }
     }
     
+}
+
+- (NSArray*)getSortedMedia {
+    if (self.sortDirty) {
+        self.sortFiles = [self.mediaFiles.allValues sortedArrayUsingComparator:^NSComparisonResult(XHMediaFile*  _Nonnull obj1, XHMediaFile*  _Nonnull obj2) {
+            return [obj1.addDate compare:obj2.addDate];
+        }];
+    }
+    
+    return self.sortFiles;
 }
 
 - (BOOL)isNewTask:(NSString *)ID {
@@ -179,7 +196,7 @@
 }
 
 - (void)deleteAllTask {
-    for (NSURLSessionDataTask *task in self.tasks) {
+    for (NSURLSessionDataTask *task  in self.tasks.allValues) {
         [task cancel];
     }
 }
