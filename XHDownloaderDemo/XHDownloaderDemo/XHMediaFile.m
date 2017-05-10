@@ -19,7 +19,7 @@
     NSDictionary *info = dic[@"info"];
     if (self) {
         [self setValuesForKeysWithDictionary:info];
-        if (_state == MediaFileStateDownloading) {
+        if (_state == MediaFileStateDownloading || _state == MediaFileStatePending) {
             _state = MediaFileStateSuspended;
         }
     }

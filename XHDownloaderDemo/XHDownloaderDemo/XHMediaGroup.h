@@ -13,6 +13,7 @@
 @interface XHMediaGroup : NSObject
 
 @property (strong, nonatomic) NSString *groupID;
+@property (strong, nonatomic) NSMutableArray *mediaArr;
 @property (nonatomic, assign) float progress;
 /** 文件状态 */
 @property (nonatomic, assign) MediaFileState state;

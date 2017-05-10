@@ -103,6 +103,17 @@
     [self.delegate deleteTask:ID];
 
 }
+
+- (void)deleteByGroupID:(NSString*)groupID {
+    for (XHMediaFile *mf in self.mediaFiles.allValues) {
+        if ([mf.groupID isEqualToString:groupID]) {
+            [self deleteByID:mf.ID];
+        }
+
+    }
+    
+}
+
 - (void)deleteAll {
     self.mediaFiles = nil;
     [self.db cleanAll];

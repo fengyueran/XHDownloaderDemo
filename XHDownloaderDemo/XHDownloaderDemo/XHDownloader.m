@@ -252,7 +252,7 @@ didReceiveResponse:(NSURLResponse *)response
     double receivedSize = mediaFile.downloadedBytes;
     double expectedSize = mediaFile.totalSize;
     NSUInteger progress = (int)(receivedSize/ expectedSize*100);
-    //NSLog(@"progress = %%%ld",progress);
+    NSLog(@"progress = %%%ld",progress);
 
     mediaFile.progressBlock(receivedSize, expectedSize, progress);
     mediaFile.progress = progress * 0.01;

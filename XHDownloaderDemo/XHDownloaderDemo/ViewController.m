@@ -84,8 +84,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *url = self.urls[indexPath.row];
-    [[XHFileManager sharedInstance]deleteByID:url.md5String];
+    NSString *url = self.urls[indexPath.row][0];
+    [[XHFileManager sharedInstance]deleteByGroupID:url.md5String];
     [self.urls removeObjectAtIndex:indexPath.row];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }

@@ -30,6 +30,7 @@
 - (void)forceSaveAll;
 - (int)runningCount;
 - (void)deleteByID:(NSString*)ID;
+- (void)deleteByGroupID:(NSString*)groupID;
 - (void)deleteAll;
 
 @end
