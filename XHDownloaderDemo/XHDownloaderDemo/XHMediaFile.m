@@ -12,7 +12,10 @@
 
 - (void)stateChange:(MediaFileState)state {
     _state = state;
-    _stateBlock(_state);
+    if (_stateBlock) {
+        _stateBlock(_state);
+    }
+    
 }
 - (instancetype)initWithDictionary:(NSDictionary *)dic {
     self = [super init];

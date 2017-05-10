@@ -9,15 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "XHMediaFile.h"
 
+@protocol DownloadDelegate <NSObject>
 
-typedef void(^XHDownloaderProgressBlock)(long long receivedSize, long long expectedSize, NSInteger speed);
+- (void)refreshCellWithID:(NSString *)ID;
+
+@end
+typedef void(^XHDownloaderProgressBlock)(NSString *ID);
 typedef void(^XHDownloaderStateBlock)( MediaFileState state);
 
 
 @interface XHDownloader : NSObject
 
-+ (instancetype)sharedInstance;
+@property (nonatomic, weak) id delegate;
 
++ (instancetype)sharedInstance;
+- (void)downloadWithURL:(NSString *)url downloadDelegate:(id<DownloadDelegate>)delegate;
 - (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
                   state:(XHDownloaderStateBlock)stateBlock;

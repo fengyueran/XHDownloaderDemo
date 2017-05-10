@@ -115,7 +115,7 @@
 }
 
 - (void)deleteAll {
-    self.mediaFiles = nil;
+    self.mediaFiles = [NSMutableDictionary new];
     [self.db cleanAll];
     [self.delegate deleteAllTask];
 }
@@ -139,7 +139,10 @@
 
 - (NSDictionary*) getJSONObject {
     NSMutableDictionary* all = [NSMutableDictionary new];
-    [all setObject:self.mediaFiles.allKeys  forKey:@"list"];
+    if (self.mediaFiles) {
+        [all setObject:self.mediaFiles.allKeys  forKey:@"list"];
+    }
+    
     return all;
 }
 

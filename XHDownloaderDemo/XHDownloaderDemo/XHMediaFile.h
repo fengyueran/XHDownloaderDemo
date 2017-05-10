@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 @property (nonatomic, strong) NSDate* addDate;
 @property (nonatomic, assign) BOOL completed;
 /** 下载进度 */
-@property (nonatomic, copy) void(^progressBlock)(long long receivedSize, long long expectedSize, NSInteger progress);
+@property (nonatomic, copy) void(^progressBlock)(NSString *ID);
 /** 下载状态 */
 @property (nonatomic, copy) void(^stateBlock)(MediaFileState MediaFileState);
 

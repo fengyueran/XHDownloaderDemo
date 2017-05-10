@@ -60,6 +60,12 @@
     return self;
 }
 
+- (void)downloadWithURL:(NSString *)url downloadDelegate:(id<DownloadDelegate>)delegate {
+    self.delegate = delegate;
+    [self downloadWithURL:url progress:nil state:nil];
+
+}
+
 - (void)downloadWithArr:(NSArray *)urls
                progress:(XHDownloaderProgressBlock)progressBlock
                   state:(XHDownloaderStateBlock)stateBlock {
@@ -132,6 +138,10 @@
         [task resume];
        
     }
+    if (self.delegate) {
+       [self.delegate refreshCellWithID:mediaFile.ID];
+    }
+
    
 }
 
@@ -141,6 +151,9 @@
     for (XHMediaFile* mf in self.sortFiles) {
         if (mf.state == MediaFileStatePending && [self.fm runningCount] < self.maxDownloads) {
             [mf stateChange:MediaFileStateDownloading];
+            if (self.delegate) {
+                [self.delegate refreshCellWithID:mf.ID];
+            }
             NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
             [task resume];
              [self.fm saveID:mf];
@@ -183,6 +196,9 @@
     [task cancel];
     XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
     [mediaFile stateChange:MediaFileStateSuspended];
+    if (self.delegate) {
+        [self.delegate refreshCellWithID:ID];
+    }
     [self launchNextTask];
 }
 
@@ -252,9 +268,13 @@ didReceiveResponse:(NSURLResponse *)response
     double receivedSize = mediaFile.downloadedBytes;
     double expectedSize = mediaFile.totalSize;
     NSUInteger progress = (int)(receivedSize/ expectedSize*100);
-    NSLog(@"progress = %%%ld",progress);
+    //NSLog(@"progress = %%%ld",progress);
 
-    mediaFile.progressBlock(receivedSize, expectedSize, progress);
+    if (self.delegate) {
+        [self.delegate refreshCellWithID:mediaFile.ID];
+    } else if(mediaFile.progressBlock){
+        mediaFile.progressBlock(mediaFile.ID);
+    }
     mediaFile.progress = progress * 0.01;
     [self.fm saveFile:mediaFile];
 }
@@ -273,6 +293,9 @@ didReceiveResponse:(NSURLResponse *)response
         [self.fm saveFile:mediaFile];
         [self.fm forceSaveAll];
         [self launchNextTask];
+    }
+    if (self.delegate) {
+        [self.delegate refreshCellWithID:mediaFile.ID];
     }
         
     // 关闭流

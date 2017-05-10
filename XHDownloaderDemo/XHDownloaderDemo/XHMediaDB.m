@@ -79,12 +79,10 @@
     NSMutableDictionary* fileProviders = [self.fileProviders mutableCopy];
     for (NSString* ID in fileProviders) {
         XHMediaFile* provider = self.fileProviders[ID];
-        NSOutputStream* stream = [NSOutputStream outputStreamToFileAtPath:[self fileInfoWithID:ID] append:NO];
+        NSString *a=[self fileInfoWithID:ID];
+        NSOutputStream* stream = [NSOutputStream outputStreamToFileAtPath:a append:NO];
         [stream open];
         NSError* error = NULL;
-//        if (self.projectProvider != nil && [self.projectProvider getMediaByID:ID] == nil) {
-//            continue;
-//        }
         [NSJSONSerialization writeJSONObject:[provider getJSONObject] toStream:stream options:NSJSONWritingPrettyPrinted error:&error];
         [stream close];
     }
@@ -113,8 +111,9 @@
 }
 
 - (void)cleanAll {
+    self.fileProviders = nil;
   NSFileManager *fm = [NSFileManager new];
   [fm removeItemAtPath:self.pathRoot error:nil];
-    
+    [fm createDirectoryAtPath:self.pathRoot withIntermediateDirectories:YES attributes:nil error:nil];
 }
 @end

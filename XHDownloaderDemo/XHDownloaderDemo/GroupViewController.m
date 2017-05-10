@@ -13,7 +13,7 @@
 #import "NSString+Hash.h"
 #import "XHMediaGroup.h"
 
-@interface GroupViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface GroupViewController ()<UITableViewDelegate,UITableViewDataSource,DownloadDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)deleteAll:(id)sender;
@@ -45,6 +45,7 @@
     return _urls;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.delegate = self;
@@ -56,7 +57,11 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DownloadingCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"DownloadingCell" owner:nil options:nil] firstObject];
+    DownloadingCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Downloading"];
+    if (!cell) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"DownloadingCell" owner:nil options:nil] firstObject];
+    }
+    
     cell.ID = ((NSString *)self.urls[indexPath.row][0]).md5String;
     [cell updateStatusWithGroup];
     return cell;
@@ -67,7 +72,7 @@
     
     DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    [[XHDownloader sharedInstance] downloadWithArr:urlArr progress:^(long long receivedSize, long long expectedSize, NSInteger speed) {
+    [[XHDownloader sharedInstance] downloadWithArr:urlArr progress:^(NSString *ID) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [cell updateStatusWithGroup];
             
@@ -88,6 +93,11 @@
     [[XHFileManager sharedInstance]deleteByGroupID:url.md5String];
     [self.urls removeObjectAtIndex:indexPath.row];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+
+- (void)refresh {
+    [self.tableView reloadData];
 }
 
 @end

@@ -22,6 +22,7 @@
 		E72073491EAF67D300A3B879 /* XHDownloaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073481EAF67D300A3B879 /* XHDownloaderDemoTests.m */; };
 		E72073541EAF67D300A3B879 /* XHDownloaderDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073531EAF67D300A3B879 /* XHDownloaderDemoUITests.m */; };
 		E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073621EAF67F700A3B879 /* XHDownloader.m */; };
+		E757CF501EC2EE13007CB821 /* NonGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E757CF4F1EC2EE13007CB821 /* NonGroupViewController.m */; };
 		E7EC38FA1EB9E85B00320DA1 /* XHMediaFile.m in Sources */ = {isa = PBXBuildFile; fileRef = E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */; };
 		E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,8 @@
 		E72073551EAF67D300A3B879 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E72073611EAF67F700A3B879 /* XHDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloader.h; sourceTree = "<group>"; };
 		E72073621EAF67F700A3B879 /* XHDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloader.m; sourceTree = "<group>"; };
+		E757CF4E1EC2EE13007CB821 /* NonGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonGroupViewController.h; sourceTree = "<group>"; };
+		E757CF4F1EC2EE13007CB821 /* NonGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonGroupViewController.m; sourceTree = "<group>"; };
 		E7EC38F81EB9E85B00320DA1 /* XHMediaFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaFile.h; sourceTree = "<group>"; };
 		E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaFile.m; sourceTree = "<group>"; };
 		E7EC39001EB9F5ED00320DA1 /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
@@ -131,6 +134,8 @@
 				E72073321EAF67D300A3B879 /* AppDelegate.m */,
 				E72073341EAF67D300A3B879 /* GroupViewController.h */,
 				E72073351EAF67D300A3B879 /* GroupViewController.m */,
+				E757CF4E1EC2EE13007CB821 /* NonGroupViewController.h */,
+				E757CF4F1EC2EE13007CB821 /* NonGroupViewController.m */,
 				E71B60E91EBC62D7000E97C2 /* DownloadingCell.h */,
 				E71B60EA1EBC62D7000E97C2 /* DownloadingCell.m */,
 				E71B60E71EBC62A3000E97C2 /* DownloadingCell.xib */,
@@ -340,6 +345,7 @@
 				E71B60EE1EBC86EA000E97C2 /* XHMediaDB.m in Sources */,
 				E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */,
 				E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */,
+				E757CF501EC2EE13007CB821 /* NonGroupViewController.m in Sources */,
 				E71B60F11EBD750E000E97C2 /* XHFileManager.m in Sources */,
 				E72073361EAF67D300A3B879 /* GroupViewController.m in Sources */,
 				E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */,
