@@ -71,7 +71,7 @@
 	self.progressLabel.text = progressStr;
 	self.progressView.progress = mf.progress;
 
-//    self.downloadStateLabel.text = [self getState:mf.state];
+    self.downloadStateLabel.text = [self getState:mf.state];
 
 }
 

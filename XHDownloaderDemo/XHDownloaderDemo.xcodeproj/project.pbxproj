@@ -15,7 +15,7 @@
 		E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */; };
 		E72073301EAF67D300A3B879 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E720732F1EAF67D300A3B879 /* main.m */; };
 		E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073321EAF67D300A3B879 /* AppDelegate.m */; };
-		E72073361EAF67D300A3B879 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073351EAF67D300A3B879 /* ViewController.m */; };
+		E72073361EAF67D300A3B879 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073351EAF67D300A3B879 /* GroupViewController.m */; };
 		E72073391EAF67D300A3B879 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E72073371EAF67D300A3B879 /* Main.storyboard */; };
 		E720733B1EAF67D300A3B879 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E720733A1EAF67D300A3B879 /* Assets.xcassets */; };
 		E720733E1EAF67D300A3B879 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E720733C1EAF67D300A3B879 /* LaunchScreen.storyboard */; };
@@ -59,8 +59,8 @@
 		E720732F1EAF67D300A3B879 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E72073311EAF67D300A3B879 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E72073321EAF67D300A3B879 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E72073341EAF67D300A3B879 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		E72073351EAF67D300A3B879 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E72073341EAF67D300A3B879 /* GroupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupViewController.h; sourceTree = "<group>"; };
+		E72073351EAF67D300A3B879 /* GroupViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupViewController.m; sourceTree = "<group>"; };
 		E72073381EAF67D300A3B879 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E720733A1EAF67D300A3B879 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E720733D1EAF67D300A3B879 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -129,8 +129,8 @@
 			children = (
 				E72073311EAF67D300A3B879 /* AppDelegate.h */,
 				E72073321EAF67D300A3B879 /* AppDelegate.m */,
-				E72073341EAF67D300A3B879 /* ViewController.h */,
-				E72073351EAF67D300A3B879 /* ViewController.m */,
+				E72073341EAF67D300A3B879 /* GroupViewController.h */,
+				E72073351EAF67D300A3B879 /* GroupViewController.m */,
 				E71B60E91EBC62D7000E97C2 /* DownloadingCell.h */,
 				E71B60EA1EBC62D7000E97C2 /* DownloadingCell.m */,
 				E71B60E71EBC62A3000E97C2 /* DownloadingCell.xib */,
@@ -341,7 +341,7 @@
 				E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */,
 				E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */,
 				E71B60F11EBD750E000E97C2 /* XHFileManager.m in Sources */,
-				E72073361EAF67D300A3B879 /* ViewController.m in Sources */,
+				E72073361EAF67D300A3B879 /* GroupViewController.m in Sources */,
 				E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */,
 				E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */,
 				E72073301EAF67D300A3B879 /* main.m in Sources */,

@@ -6,14 +6,14 @@
 //  Copyright © 2017 xinghun meng. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "GroupViewController.h"
 #import "XHFileManager.h"
 #import "XHDownloader.h"
 #import "DownloadingCell.h"
 #import "NSString+Hash.h"
 #import "XHMediaGroup.h"
 
-@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface GroupViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 - (IBAction)deleteAll:(id)sender;
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation ViewController
+@implementation GroupViewController
 
 - (IBAction)deleteAll:(id)sender {
     [[XHFileManager sharedInstance] deleteAll];
