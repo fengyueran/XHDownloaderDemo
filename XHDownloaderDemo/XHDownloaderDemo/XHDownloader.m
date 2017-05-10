@@ -7,6 +7,7 @@
 //
 
 #import "XHDownloaderConf.h"
+#import "XHMediaGroup.h"
 #import "XHFileManager.h"
 #import "XHDownloader.h"
 #import "NSString+Hash.h"
@@ -28,7 +29,9 @@
 @end
 
 @implementation XHDownloader
-
+{
+   NSString * _groupID;
+}
 + (instancetype)sharedInstance {
     static dispatch_once_t onceToken;
     static XHDownloader *downloader;
@@ -57,6 +60,16 @@
     return self;
 }
 
+- (void)downloadWithArr:(NSArray *)urls
+               progress:(XHDownloaderProgressBlock)progressBlock
+                  state:(XHDownloaderStateBlock)stateBlock {
+    _groupID = ((NSString *)urls[0]).md5String;
+    for (int i = 0; i < urls.count; i++) {
+        [self downloadWithURL:urls[i] progress:progressBlock state:stateBlock];
+    }
+    
+    
+}
 
 - (void)downloadWithURL:(NSString *)url
                progress:(XHDownloaderProgressBlock)progressBlock
@@ -99,12 +112,12 @@
         mediaFile.addDate = [NSDate date];
         
         mediaFile.ID = ID;
+        mediaFile.groupID = _groupID;
         [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
         
         [self queueTask:mediaFile task:task];
     }
     
-
 
 }
 
@@ -150,7 +163,7 @@
 - (BOOL)isNewTask:(NSString *)ID {
       XHMediaFile *mediaFile =  [self.fm getMediaByID:ID];
     if (mediaFile) {
-        if (mediaFile.state == MediaFileStateDownloading) {
+        if (mediaFile.state == MediaFileStateDownloading || mediaFile.state == MediaFileStatePending) {
             [self pause:ID];
             return NO;
         } else if (mediaFile.state == MediaFileStateCompleted) {
@@ -239,7 +252,7 @@ didReceiveResponse:(NSURLResponse *)response
     double receivedSize = mediaFile.downloadedBytes;
     double expectedSize = mediaFile.totalSize;
     NSUInteger progress = (int)(receivedSize/ expectedSize*100);
-    NSLog(@"progress = %%%ld",progress);
+    //NSLog(@"progress = %%%ld",progress);
 
     mediaFile.progressBlock(receivedSize, expectedSize, progress);
     mediaFile.progress = progress * 0.01;

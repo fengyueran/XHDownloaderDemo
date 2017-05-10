@@ -11,6 +11,7 @@
 #import "XHDownloader.h"
 #import "DownloadingCell.h"
 #import "NSString+Hash.h"
+#import "XHMediaGroup.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -33,9 +34,12 @@
 - (NSMutableArray *)urls
 {
     if (!_urls) {
-        self.urls = [NSMutableArray array];
-        for (int i = 2; i<=10; i++) {
-            [self.urls addObject:[NSString stringWithFormat:@"http://120.25.226.186:32812/resources/videos/minion_%02d.mp4", i]];
+        _urls = [NSMutableArray array];
+        for (int i = 1; i<=10; i=i+2) {
+            NSMutableArray *group = [NSMutableArray array];
+            [group addObject:[NSString stringWithFormat:@"http://120.25.226.186:32812/resources/videos/minion_%02d.mp4", i]];
+            [group addObject:[NSString stringWithFormat:@"http://120.25.226.186:32812/resources/videos/minion_%02d.mp4", i+1]];
+            [_urls addObject:group];
         }
     }
     return _urls;
@@ -53,25 +57,29 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DownloadingCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"DownloadingCell" owner:nil options:nil] firstObject];
-    cell.ID = ((NSString *)self.urls[indexPath.row]).md5String;
+    cell.ID = ((NSString *)self.urls[indexPath.row][0]).md5String;
     [cell updateStatus];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *url = self.urls[indexPath.row];
+    NSArray *urlArr = self.urls[indexPath.row];
+    
     DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    [[XHDownloader sharedInstance] downloadWithURL:url progress:^(long long receivedSize, long long expectedSize, NSInteger speed) {
+    
+    [[XHDownloader sharedInstance] downloadWithArr:urlArr progress:^(long long receivedSize, long long expectedSize, NSInteger speed) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell updateStatus];
+            [cell updateStatusWithGroup];
             
         });
         
     } state:^(MediaFileState state) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell updateStatus];
+            [cell updateStatusWithGroup];
         });
     }];
+
+    
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

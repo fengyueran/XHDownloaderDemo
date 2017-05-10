@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XHMediaGroup.h"
 #import "XHMediaFile.h"
+
 
 @protocol DeleteWorkDelegate
 - (void)deleteTask:(NSString *)ID;
@@ -24,6 +26,7 @@
 - (void)saveFile:(XHMediaFile*) mf;
 - (void)saveID:(XHMediaFile*) mf;
 - (XHMediaFile*)getMediaByID:(NSString*)ID;
+- (XHMediaGroup*)getMediaByGroupID:(NSString*)groupID;
 - (void)forceSaveAll;
 - (int)runningCount;
 - (void)deleteByID:(NSString*)ID;

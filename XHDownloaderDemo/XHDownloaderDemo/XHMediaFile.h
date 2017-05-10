@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 
 @interface XHMediaFile : NSObject
 @property (nonatomic, strong) NSString *ID;
+@property (nonatomic, strong) NSString *groupID;
 @property (nonatomic, strong) NSString *url;
 /** 流 */
 @property (nonatomic, strong) NSOutputStream *stream;

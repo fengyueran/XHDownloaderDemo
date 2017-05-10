@@ -14,6 +14,7 @@
 @interface XHFileManager ()
 
 @property (strong, nonatomic) NSMutableDictionary *mediaFiles;
+@property (strong, nonatomic) NSMutableDictionary *groupMediaFiles;
 @property (strong, nonatomic) XHMediaDB *db;
 
 @end
@@ -35,6 +36,7 @@
     if (self) {
         _db = [[XHMediaDB alloc]initWithPathRoot:[XHDownloaderConf pathRoot]];
         _mediaFiles = [self getMediaInfoWithDB:_db];
+        _groupMediaFiles = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -70,6 +72,17 @@
 
 - (XHMediaFile*)getMediaByID:(NSString*)ID {
     return self.mediaFiles[ID];
+}
+
+- (XHMediaGroup*)getMediaByGroupID:(NSString*)groupID {
+    NSMutableArray *array = [NSMutableArray array];
+    for (XHMediaFile * mf in self.mediaFiles.allValues) {
+        if ([mf.groupID isEqualToString:groupID]) {
+            [array addObject:mf];
+        }
+    }
+    XHMediaGroup *group = [[XHMediaGroup alloc]initWithMediaArr:array];
+    return group;
 }
 
 - (int)runningCount {

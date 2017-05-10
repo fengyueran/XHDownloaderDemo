@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *downloadStateLabel;
 - (void)updateStatus;
+- (void) updateStatusWithGroup;
 
 @end

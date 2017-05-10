@@ -12,6 +12,7 @@
 		E71B60EE1EBC86EA000E97C2 /* XHMediaDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60ED1EBC86EA000E97C2 /* XHMediaDB.m */; };
 		E71B60F11EBD750E000E97C2 /* XHFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F01EBD750E000E97C2 /* XHFileManager.m */; };
 		E71B60F41EBD7757000E97C2 /* XHDownloaderConf.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F31EBD7757000E97C2 /* XHDownloaderConf.m */; };
+		E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */; };
 		E72073301EAF67D300A3B879 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E720732F1EAF67D300A3B879 /* main.m */; };
 		E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073321EAF67D300A3B879 /* AppDelegate.m */; };
 		E72073361EAF67D300A3B879 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073351EAF67D300A3B879 /* ViewController.m */; };
@@ -52,6 +53,8 @@
 		E71B60F01EBD750E000E97C2 /* XHFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHFileManager.m; sourceTree = "<group>"; };
 		E71B60F21EBD7757000E97C2 /* XHDownloaderConf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloaderConf.h; sourceTree = "<group>"; };
 		E71B60F31EBD7757000E97C2 /* XHDownloaderConf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloaderConf.m; sourceTree = "<group>"; };
+		E71B60F51EC16F7B000E97C2 /* XHMediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaGroup.h; sourceTree = "<group>"; };
+		E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaGroup.m; sourceTree = "<group>"; };
 		E720732B1EAF67D300A3B879 /* XHDownloaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XHDownloaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E720732F1EAF67D300A3B879 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E72073311EAF67D300A3B879 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -181,6 +184,8 @@
 				E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */,
 				E71B60EC1EBC86EA000E97C2 /* XHMediaDB.h */,
 				E71B60ED1EBC86EA000E97C2 /* XHMediaDB.m */,
+				E71B60F51EC16F7B000E97C2 /* XHMediaGroup.h */,
+				E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */,
 			);
 			name = XHDownloader;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */,
 				E71B60F11EBD750E000E97C2 /* XHFileManager.m in Sources */,
 				E72073361EAF67D300A3B879 /* ViewController.m in Sources */,
+				E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */,
 				E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */,
 				E72073301EAF67D300A3B879 /* main.m in Sources */,
 			);

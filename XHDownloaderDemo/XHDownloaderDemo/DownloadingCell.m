@@ -39,6 +39,26 @@
 	return [[XHFileManager sharedInstance] getMediaByID:self.ID];
 }
 
+- (XHMediaGroup*) mg {
+    return [[XHFileManager sharedInstance] getMediaByGroupID:self.mf.groupID];
+}
+
+- (void) updateStatusWithGroup {
+    XHMediaGroup* mg = self.mg;
+    if (mg == nil) {
+        return;
+    }
+    
+    //	self.fileNameLabel.text = mf.info.name;
+    NSUInteger progress = (int)(mg.progress*100);
+    NSString* progressStr = [NSString stringWithFormat:@"%%%ld",progress];
+    self.progressLabel.text = progressStr;
+    self.progressView.progress = mg.progress;
+    
+    self.downloadStateLabel.text = [self getState:mg.state];
+    
+}
+
 - (void) updateStatus {
 	XHMediaFile* mf = self.mf;
 	if (mf == nil) {
@@ -51,7 +71,7 @@
 	self.progressLabel.text = progressStr;
 	self.progressView.progress = mf.progress;
 
-    self.downloadStateLabel.text = [self getState:mf.state];
+//    self.downloadStateLabel.text = [self getState:mf.state];
 
 }
 
