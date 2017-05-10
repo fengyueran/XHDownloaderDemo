@@ -30,6 +30,7 @@
 - (NSDictionary*) toDictionary {
     NSMutableDictionary* dict = [NSMutableDictionary new];
     dict[@"ID"] = self.ID;
+    dict[@"groupID"] = self.groupID;
 //    dict[@"name"] = self.name;
     dict[@"addDate"] = [self stringFromDate:self.addDate];
     dict[@"totalSize"] = [[NSNumber alloc] initWithLongLong:self.totalSize];

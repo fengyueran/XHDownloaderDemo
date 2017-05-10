@@ -13,28 +13,33 @@
 - (instancetype)initWithMediaArr:(NSMutableArray<XHMediaFile*> *)mediaArr {
     self = [super init];
     if (self) {
-        int count = 0;
-        int cacheCompletedNum = 0;
-        int pendingFileNum = 0;
-        _progress = 0;
-        for (XHMediaFile *mf in mediaArr) {
-            _progress += mf.progress;
-            
-            count ++;
-            if (mf.state == MediaFileStateDownloading) {
-                _state = MediaFileStateDownloading;
-            } else if (mf.state == MediaFileStateCompleted) {
-                cacheCompletedNum ++;
-            } else if (mf.state == MediaFileStatePending){
-                pendingFileNum ++;
+        if (mediaArr.count > 0) {
+            int count = 0;
+            int cacheCompletedNum = 0;
+            int pendingFileNum = 0;
+            _progress = 0;
+            for (XHMediaFile *mf in mediaArr) {
+                _progress += mf.progress;
+                
+                count ++;
+                if (mf.state == MediaFileStateDownloading) {
+                    _state = MediaFileStateDownloading;
+                } else if (mf.state == MediaFileStateCompleted) {
+                    cacheCompletedNum ++;
+                } else if (mf.state == MediaFileStatePending){
+                    pendingFileNum ++;
+                }
             }
+            if (count == cacheCompletedNum) {
+                _state = MediaFileStateCompleted;
+            } else if (count == pendingFileNum) {
+                _state = MediaFileStatePending;
+            }
+            _progress = _progress/count;
+        } else {
+            return nil;
         }
-        if (count == cacheCompletedNum) {
-            _state = MediaFileStateCompleted;
-        } else if (count == pendingFileNum) {
-            _state = MediaFileStatePending;
-        }
-        _progress = _progress/count;
+
     }
     return self;
 }

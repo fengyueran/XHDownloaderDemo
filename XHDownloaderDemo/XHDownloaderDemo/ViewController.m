@@ -58,7 +58,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DownloadingCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"DownloadingCell" owner:nil options:nil] firstObject];
     cell.ID = ((NSString *)self.urls[indexPath.row][0]).md5String;
-    [cell updateStatus];
+    [cell updateStatusWithGroup];
     return cell;
 }
 

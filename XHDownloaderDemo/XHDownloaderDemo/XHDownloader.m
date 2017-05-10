@@ -50,7 +50,7 @@
         _mediaFiles = [NSMutableDictionary dictionary];
         _sortFiles = [NSArray array];
         _tasks = [NSMutableDictionary dictionary];
-        _maxDownloads = 2;
+        _maxDownloads = 4;
         _cacheDir = [XHDownloaderConf pathRoot];
         _fm = [XHFileManager sharedInstance];
         _fm.delegate = self;
@@ -139,7 +139,7 @@
     self.sortFiles = [self getSortedMedia];
     self.sortDirty = NO;
     for (XHMediaFile* mf in self.sortFiles) {
-        if (mf.state == MediaFileStatePending && [self.fm runningCount] < 2) {
+        if (mf.state == MediaFileStatePending && [self.fm runningCount] < self.maxDownloads) {
             [mf stateChange:MediaFileStateDownloading];
             NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
             [task resume];
