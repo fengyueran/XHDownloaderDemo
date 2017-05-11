@@ -51,7 +51,7 @@
     
     //	self.fileNameLabel.text = mf.info.name;
     NSUInteger progress = (int)(mg.progress*100);
-    NSLog(@"progress=%ld",progress);
+    //NSLog(@"progress=%ld",progress);
     NSString* progressStr = [NSString stringWithFormat:@"%%%ld",progress];
     self.progressLabel.text = progressStr;
     self.progressView.progress = mg.progress;

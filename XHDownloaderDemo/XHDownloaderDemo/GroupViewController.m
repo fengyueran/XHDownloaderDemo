@@ -16,6 +16,8 @@
 @interface GroupViewController ()<UITableViewDelegate,UITableViewDataSource,DownloadDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSMutableDictionary* cellMap;
+
 - (IBAction)deleteAll:(id)sender;
 
 @property (strong, nonatomic) NSMutableArray *urls;
@@ -24,6 +26,14 @@
 @end
 
 @implementation GroupViewController
+
+- (NSMutableDictionary*) cellMap {
+    if (!_cellMap) {
+        _cellMap = [[NSMutableDictionary alloc]init];
+    }
+    return _cellMap;
+}
+
 
 - (IBAction)deleteAll:(id)sender {
     [[XHFileManager sharedInstance] deleteAll];
@@ -45,6 +55,12 @@
     return _urls;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [XHDownloader sharedInstance].delegate = self;
+    
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -63,6 +79,8 @@
     }
     
     cell.ID = ((NSString *)self.urls[indexPath.row][0]).md5String;
+    [self.cellMap setObject:cell forKey:cell.ID];
+
     [cell updateStatusWithGroup];
     return cell;
 }
@@ -72,17 +90,19 @@
     
     DownloadingCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    [[XHDownloader sharedInstance] downloadWithArr:urlArr progress:^(NSString *ID) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cell updateStatusWithGroup];
-            
-        });
-        
-    } state:^(MediaFileState state) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cell updateStatusWithGroup];
-        });
-    }];
+    [[XHDownloader sharedInstance]downloadWithArr:urlArr downloadDelegate:self];
+    
+//    [[XHDownloader sharedInstance] downloadWithArr:urlArr progress:^(NSString *ID) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [cell updateStatusWithGroup];
+//            
+//        });
+//        
+//    } state:^(MediaFileState state) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [cell updateStatusWithGroup];
+//        });
+//    }];
 
     
 }
@@ -95,9 +115,16 @@
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
-
-- (void)refresh {
-    [self.tableView reloadData];
+- (void)refreshCellWithID:(NSString *)ID {
+    //DownloadingCell *cell =  [self.cellMap valueForKey:ID];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        DownloadingCell *cell =  [self.cellMap valueForKey:ID];
+        [cell updateStatusWithGroup];
+        
+    });
+    
 }
+
+
 
 @end

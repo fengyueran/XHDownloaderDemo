@@ -66,6 +66,12 @@
 
 }
 
+- (void)downloadWithArr:(NSArray *)urls downloadDelegate:(id<DownloadDelegate>)delegate {
+    self.delegate = delegate;
+    [self downloadWithArr:urls progress:nil state:nil];
+
+}
+
 - (void)downloadWithArr:(NSArray *)urls
                progress:(XHDownloaderProgressBlock)progressBlock
                   state:(XHDownloaderStateBlock)stateBlock {
@@ -109,18 +115,23 @@
         // 保存任务
         [self.tasks setValue:task forKey:ID];
         
-        XHMediaFile *mediaFile = [[XHMediaFile alloc]init];
-        mediaFile.url = url;
-        mediaFile.stream = stream;
-        mediaFile.downloadedBytes = downloadedBytes;
-        mediaFile.stateBlock = stateBlock;
-        mediaFile.progressBlock = progressBlock;
-        mediaFile.addDate = [NSDate date];
+        XHMediaFile *mediaFile = [self.mediaFiles valueForKey:ID];
+        if (!mediaFile) {
+            mediaFile = [[XHMediaFile alloc]init];
+            mediaFile.url = url;
+            mediaFile.stream = stream;
+            mediaFile.downloadedBytes = downloadedBytes;
+            mediaFile.stateBlock = stateBlock;
+            mediaFile.progressBlock = progressBlock;
+           
+            
+            mediaFile.ID = ID;
+            mediaFile.groupID = _groupID;
+            [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
+
+        }
         
-        mediaFile.ID = ID;
-        mediaFile.groupID = _groupID;
-        [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
-        
+         mediaFile.addDate = [NSDate date];
         [self queueTask:mediaFile task:task];
     }
     
@@ -139,7 +150,12 @@
        
     }
     if (self.delegate) {
-       [self.delegate refreshCellWithID:mediaFile.ID];
+        if (mediaFile.groupID) {
+            [self.delegate refreshCellWithID:mediaFile.groupID];
+        } else {
+            [self.delegate refreshCellWithID:mediaFile.ID];
+        }
+
     }
 
    
@@ -152,7 +168,12 @@
         if (mf.state == MediaFileStatePending && [self.fm runningCount] < self.maxDownloads) {
             [mf stateChange:MediaFileStateDownloading];
             if (self.delegate) {
-                [self.delegate refreshCellWithID:mf.ID];
+                if (mf.groupID) {
+                    [self.delegate refreshCellWithID:mf.groupID];
+                } else {
+                    [self.delegate refreshCellWithID:mf.ID];
+                }
+
             }
             NSURLSessionDataTask *task = [self.tasks valueForKey:mf.ID];
             [task resume];
@@ -197,7 +218,12 @@
     XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
     [mediaFile stateChange:MediaFileStateSuspended];
     if (self.delegate) {
-        [self.delegate refreshCellWithID:ID];
+        if (mediaFile.groupID) {
+            [self.delegate refreshCellWithID:mediaFile.groupID];
+        } else {
+            [self.delegate refreshCellWithID:mediaFile.ID];
+        }
+
     }
     [self launchNextTask];
 }
@@ -268,10 +294,15 @@ didReceiveResponse:(NSURLResponse *)response
     double receivedSize = mediaFile.downloadedBytes;
     double expectedSize = mediaFile.totalSize;
     NSUInteger progress = (int)(receivedSize/ expectedSize*100);
-    //NSLog(@"progress = %%%ld",progress);
+    NSLog(@"progress = %%%ld",progress);
 
     if (self.delegate) {
-        [self.delegate refreshCellWithID:mediaFile.ID];
+        if (mediaFile.groupID) {
+            [self.delegate refreshCellWithID:mediaFile.groupID];
+        } else {
+            [self.delegate refreshCellWithID:mediaFile.ID];
+        }
+
     } else if(mediaFile.progressBlock){
         mediaFile.progressBlock(mediaFile.ID);
     }
@@ -295,7 +326,11 @@ didReceiveResponse:(NSURLResponse *)response
         [self launchNextTask];
     }
     if (self.delegate) {
-        [self.delegate refreshCellWithID:mediaFile.ID];
+        if (mediaFile.groupID) {
+            [self.delegate refreshCellWithID:mediaFile.groupID];
+        } else {
+            [self.delegate refreshCellWithID:mediaFile.ID];
+        }
     }
         
     // 关闭流
