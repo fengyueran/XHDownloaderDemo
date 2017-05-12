@@ -10,6 +10,12 @@
 
 @interface XHDownloaderConf : NSObject
 
+
+/**
+ 配置数据下载的根目录
+
+ @return 数据下载根目录
+ */
 + (NSString *)pathRoot;
 
 @end

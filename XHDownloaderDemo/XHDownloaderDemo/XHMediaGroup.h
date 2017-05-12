@@ -12,12 +12,21 @@
 
 @interface XHMediaGroup : NSObject
 
+/** 文件组ID */
 @property (strong, nonatomic) NSString *groupID;
+/**文件组所包含的数据 */
 @property (strong, nonatomic) NSMutableArray *mediaArr;
+/** 文件组下载进度 */
 @property (nonatomic, assign) NSUInteger progress;
-/** 文件状态 */
+/** 文件组下载状态 */
 @property (nonatomic, assign) MediaFileState state;
 
+
+/**
+ 初始化文件组
+
+ @param mediaArr 包含文件信息的数组
+ */
 - (instancetype)initWithMediaArr:(NSMutableArray<XHMediaFile*> *)mediaArr;
 
 
