@@ -38,6 +38,7 @@
         } else if (mf.state == MediaFileStateCompleted) {
             cacheCompletedNum ++;
         } else if (mf.state == MediaFileStatePending){
+            _state = MediaFileStatePending;
             pendingFileNum ++;
         }
     }
