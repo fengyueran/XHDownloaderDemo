@@ -110,7 +110,7 @@
         // 创建一个Data任务
         
         NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
-        
+        task.taskDescription = ID;
         // 保存任务
         [self.tasks setValue:task forKey:ID];
         
@@ -267,8 +267,7 @@
           dataTask:(NSURLSessionDataTask *)dataTask
 didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
-    NSArray *key = [self.tasks allKeysForObject:dataTask];
-    XHMediaFile *mediaFile = [self getMediaFile:key[0]];
+    XHMediaFile *mediaFile = [self getMediaFile:dataTask.taskDescription];
     // 打开流
     [mediaFile.stream open];
     if (!mediaFile.totalSize) {
@@ -283,13 +282,9 @@ didReceiveResponse:(NSURLResponse *)response
  * 接收到服务器返回的数据
  */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    
-    NSArray *key = [self.tasks allKeysForObject:dataTask];
-    XHMediaFile *mediaFile = [self getMediaFile:key[0]];
-   
-
+    XHMediaFile *mediaFile = [self getMediaFile:dataTask.taskDescription];
     [mediaFile.stream write:[data bytes] maxLength:[data length]];
-    mediaFile.downloadedBytes += [data length];
+     mediaFile.downloadedBytes += [data length];
     
     // 下载进度
     long long receivedSize = mediaFile.downloadedBytes;
@@ -317,8 +312,7 @@ didReceiveResponse:(NSURLResponse *)response
  */
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    NSArray *key = [self.tasks allKeysForObject:task];
-    XHMediaFile *mediaFile = [self getMediaFile:key[0]];
+    XHMediaFile *mediaFile = [self getMediaFile:task.taskDescription];
 
     if (mediaFile) {
         if (error) {
