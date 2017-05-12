@@ -29,6 +29,43 @@
     return self;
 }
 
+- (void)didReceiveResponse:(NSURLResponse *)response {
+    [self.stream open];
+    if (!self.totalSize) {
+        self.totalSize = response.expectedContentLength + self.downloadedBytes;
+    }
+
+}
+
+- (void)didReceiveData:(NSData *)data {
+    [self.stream write:[data bytes] maxLength:[data length]];
+    self.downloadedBytes += [data length];
+    
+    // 下载进度
+    long long receivedSize = self.downloadedBytes;
+    long long expectedSize = self.totalSize;
+    NSUInteger progress = (int)((double)receivedSize/ expectedSize*100);
+    // NSLog(@"progress = %%%ld",progress);
+    
+    if(self.progressBlock){
+        self.progressBlock(self.ID);
+    }
+    
+    self.progress = progress;
+}
+
+- (void)didCompleteWithError:(NSError *)error {
+    if (self) {
+        if (error) {
+            [self stateChange:MediaFileStateFailed];
+        } else {
+            [self.stream close];
+            self.stream = nil;
+            [self stateChange:MediaFileStateCompleted];
+            self.completed = YES;
+        }
+    }
+}
 
 - (NSDictionary*) toDictionary {
     NSMutableDictionary* dict = [NSMutableDictionary new];

@@ -40,4 +40,7 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 - (NSDictionary*) getJSONObject;
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 - (void)stateChange:(MediaFileState)state;
+- (void)didReceiveResponse:(NSURLResponse *)response;
+- (void)didReceiveData:(NSData *)data;
+- (void)didCompleteWithError:(NSError *)error;
 @end
