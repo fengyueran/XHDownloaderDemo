@@ -93,6 +93,8 @@
         // 创建流
         NSString *cachePath = [_cacheDir stringByAppendingPathComponent:ID];
         
+        NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:cachePath append:YES];
+
         // 创建请求
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
         
@@ -119,8 +121,7 @@
             mediaFile.downloadedBytes = downloadedBytes;
             mediaFile.stateBlock = stateBlock;
             mediaFile.progressBlock = progressBlock;
-            mediaFile.cachePath = cachePath;
-            
+            mediaFile.stream =stream;
             mediaFile.ID = ID;
             mediaFile.groupID = _groupID;
             [self.mediaFiles setValue:mediaFile forKey:ID];
@@ -268,7 +269,8 @@ didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
     NSArray *key = [self.tasks allKeysForObject:dataTask];
     XHMediaFile *mediaFile = [self getMediaFile:key[0]];
-    
+    // 打开流
+    [mediaFile.stream open];
     if (!mediaFile.totalSize) {
          mediaFile.totalSize = response.expectedContentLength + mediaFile.downloadedBytes;
     }
@@ -284,15 +286,10 @@ didReceiveResponse:(NSURLResponse *)response
     
     NSArray *key = [self.tasks allKeysForObject:dataTask];
     XHMediaFile *mediaFile = [self getMediaFile:key[0]];
-    
-    // 写入数据
-    NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:mediaFile.cachePath append:YES];
-    // 打开流
-    [stream open];
+   
 
-    [stream write:[data bytes] maxLength:[data length]];
+    [mediaFile.stream write:[data bytes] maxLength:[data length]];
     mediaFile.downloadedBytes += [data length];
-    [stream close];
     
     // 下载进度
     long long receivedSize = mediaFile.downloadedBytes;
@@ -327,6 +324,8 @@ didReceiveResponse:(NSURLResponse *)response
         if (error) {
             [mediaFile stateChange:MediaFileStateFailed];
         } else {
+            [mediaFile.stream close];
+            mediaFile.stream = nil;
             [mediaFile stateChange:MediaFileStateCompleted];
             mediaFile.completed = YES;
             [self.mediaFiles removeObjectForKey:mediaFile.ID];
@@ -341,7 +340,6 @@ didReceiveResponse:(NSURLResponse *)response
                 [self.delegate refreshCellWithID:mediaFile.ID];
             }
         }
-        
         
         // 清除任务
         
