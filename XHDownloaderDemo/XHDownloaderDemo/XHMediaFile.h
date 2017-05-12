@@ -22,12 +22,12 @@ typedef NS_ENUM(NSInteger, MediaFileState) {
 @property (nonatomic, strong) NSString *groupID;
 @property (nonatomic, strong) NSString *url;
 /** 流 */
-@property (nonatomic, strong) NSOutputStream *stream;
+@property (nonatomic, strong) NSString *cachePath;
 /** 数据的总长度 */
 @property (nonatomic, assign) long long totalSize;
 /** 已下载的数据大小 */
 @property (nonatomic, assign) long long downloadedBytes;
-@property (nonatomic, assign) float progress;
+@property (nonatomic, assign) NSUInteger progress;
 /** 文件状态 */
 @property (nonatomic, assign) MediaFileState state;
 @property (nonatomic, strong) NSDate* addDate;

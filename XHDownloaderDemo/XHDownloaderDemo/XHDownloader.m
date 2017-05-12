@@ -92,7 +92,6 @@
     if ([self isNewTask:ID]) {
         // 创建流
         NSString *cachePath = [_cacheDir stringByAppendingPathComponent:ID];
-        NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:cachePath append:YES];
         
         // 创建请求
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -109,8 +108,6 @@
         // 创建一个Data任务
         
         NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request];
-        NSUInteger taskIdentifier = arc4random() % ((arc4random() % 10000 + arc4random() % 10000));
-        [task setValue:@(taskIdentifier) forKeyPath:@"taskIdentifier"];
         
         // 保存任务
         [self.tasks setValue:task forKey:ID];
@@ -119,18 +116,17 @@
         if (!mediaFile) {
             mediaFile = [[XHMediaFile alloc]init];
             mediaFile.url = url;
-            mediaFile.stream = stream;
             mediaFile.downloadedBytes = downloadedBytes;
             mediaFile.stateBlock = stateBlock;
             mediaFile.progressBlock = progressBlock;
-           
+            mediaFile.cachePath = cachePath;
             
             mediaFile.ID = ID;
             mediaFile.groupID = _groupID;
-            [self.mediaFiles setValue:mediaFile forKey:@(task.taskIdentifier).stringValue];
+            [self.mediaFiles setValue:mediaFile forKey:ID];
 
         }
-        
+        mediaFile.downloadedBytes = downloadedBytes;
          mediaFile.addDate = [NSDate date];
         [self queueTask:mediaFile task:task];
     }
@@ -140,6 +136,7 @@
 
 - (void)queueTask:(XHMediaFile *)mediaFile task:(NSURLSessionDataTask *)task {
      self.sortDirty = YES;
+    
     [self.fm saveFile:mediaFile];
     [self.fm saveID:mediaFile];
     if ([self.fm runningCount] >= _maxDownloads) {
@@ -184,18 +181,8 @@
     
 }
 
-- (NSArray*)getSortedMedia {
-    if (self.sortDirty) {
-        self.sortFiles = [self.mediaFiles.allValues sortedArrayUsingComparator:^NSComparisonResult(XHMediaFile*  _Nonnull obj1, XHMediaFile*  _Nonnull obj2) {
-            return [obj1.addDate compare:obj2.addDate];
-        }];
-    }
-    
-    return self.sortFiles;
-}
-
 - (BOOL)isNewTask:(NSString *)ID {
-      XHMediaFile *mediaFile =  [self.fm getMediaByID:ID];
+    XHMediaFile *mediaFile =  [self.fm getMediaByID:ID];
     if (mediaFile) {
         if (mediaFile.state == MediaFileStateDownloading || mediaFile.state == MediaFileStatePending) {
             [self pause:ID];
@@ -207,6 +194,18 @@
     return YES;
 }
 
+- (NSArray*)getSortedMedia {
+    if (self.sortDirty) {
+        self.sortFiles = [self.mediaFiles.allValues sortedArrayUsingComparator:^NSComparisonResult(XHMediaFile*  _Nonnull obj1, XHMediaFile*  _Nonnull obj2) {
+            return [obj1.addDate compare:obj2.addDate];
+        }];
+    }
+    
+    return self.sortFiles;
+}
+
+
+
 
 /**
  *  暂停下载
@@ -215,7 +214,7 @@
 {
     NSURLSessionDataTask *task = [self getTask:ID];
     [task cancel];
-    XHMediaFile *mediaFile =  [self getMediaFile:task.taskIdentifier];
+    XHMediaFile *mediaFile =  [self getMediaFile:ID];
     [mediaFile stateChange:MediaFileStateSuspended];
     if (self.delegate) {
         if (mediaFile.groupID) {
@@ -241,9 +240,9 @@
 /**
  *  根据url获取对应的下载信息模型
  */
-- (XHMediaFile *)getMediaFile:(NSUInteger)taskIdentifier
+- (XHMediaFile *)getMediaFile:(NSString *)ID
 {
-    return (XHMediaFile *)[self.mediaFiles valueForKey:@(taskIdentifier).stringValue];
+    return (XHMediaFile *)[self.mediaFiles valueForKey:ID];
 }
 
 - (void)deleteTask:(NSString *)ID {
@@ -254,6 +253,7 @@
     for (NSURLSessionDataTask *task  in self.tasks.allValues) {
         [task cancel];
     }
+    self.mediaFiles = [NSMutableDictionary new];
 }
 
 #pragma mark NSURLSessionDataDelegate
@@ -266,14 +266,12 @@
           dataTask:(NSURLSessionDataTask *)dataTask
 didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
-    XHMediaFile *mediaFile = [self getMediaFile:dataTask.taskIdentifier];
+    NSArray *key = [self.tasks allKeysForObject:dataTask];
+    XHMediaFile *mediaFile = [self getMediaFile:key[0]];
     
-    // 打开流
-    [mediaFile.stream open];
-    
-    // 获得服务器这次请求 返回数据的总长度
-    NSInteger totalSize = response.expectedContentLength + mediaFile.downloadedBytes;
-    mediaFile.totalSize = totalSize;
+    if (!mediaFile.totalSize) {
+         mediaFile.totalSize = response.expectedContentLength + mediaFile.downloadedBytes;
+    }
     
     // 接收这个请求，允许接收服务器的数据
     completionHandler(NSURLSessionResponseAllow);
@@ -284,17 +282,24 @@ didReceiveResponse:(NSURLResponse *)response
  */
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
     
-     XHMediaFile *mediaFile = [self getMediaFile:dataTask.taskIdentifier];
+    NSArray *key = [self.tasks allKeysForObject:dataTask];
+    XHMediaFile *mediaFile = [self getMediaFile:key[0]];
     
     // 写入数据
-    [mediaFile.stream write:data.bytes maxLength:data.length];
+    NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:mediaFile.cachePath append:YES];
+    // 打开流
+    [stream open];
+
+    [stream write:[data bytes] maxLength:[data length]];
     mediaFile.downloadedBytes += [data length];
+    [stream close];
     
     // 下载进度
-    double receivedSize = mediaFile.downloadedBytes;
-    double expectedSize = mediaFile.totalSize;
-    NSUInteger progress = (int)(receivedSize/ expectedSize*100);
-    NSLog(@"progress = %%%ld",progress);
+    long long receivedSize = mediaFile.downloadedBytes;
+    long long expectedSize = mediaFile.totalSize;
+   NSUInteger progress = (int)((double)receivedSize/ expectedSize*100);
+   // NSLog(@"progress = %%%ld",progress);
+   
 
     if (self.delegate) {
         if (mediaFile.groupID) {
@@ -306,7 +311,7 @@ didReceiveResponse:(NSURLResponse *)response
     } else if(mediaFile.progressBlock){
         mediaFile.progressBlock(mediaFile.ID);
     }
-    mediaFile.progress = progress * 0.01;
+    mediaFile.progress = progress;
     [self.fm saveFile:mediaFile];
 }
 
@@ -315,31 +320,34 @@ didReceiveResponse:(NSURLResponse *)response
  */
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    XHMediaFile *mediaFile = [self getMediaFile:task.taskIdentifier];
-    if (error) {
-        [mediaFile stateChange:MediaFileStateFailed];
-    } else {
-        [mediaFile stateChange:MediaFileStateCompleted];
-        mediaFile.completed = YES;
-        [self.fm saveFile:mediaFile];
-        [self.fm forceSaveAll];
-        [self launchNextTask];
-    }
-    if (self.delegate) {
-        if (mediaFile.groupID) {
-            [self.delegate refreshCellWithID:mediaFile.groupID];
+    NSArray *key = [self.tasks allKeysForObject:task];
+    XHMediaFile *mediaFile = [self getMediaFile:key[0]];
+
+    if (mediaFile) {
+        if (error) {
+            [mediaFile stateChange:MediaFileStateFailed];
         } else {
-            [self.delegate refreshCellWithID:mediaFile.ID];
+            [mediaFile stateChange:MediaFileStateCompleted];
+            mediaFile.completed = YES;
+            [self.mediaFiles removeObjectForKey:mediaFile.ID];
+            [self.fm saveFile:mediaFile];
+            [self.fm forceSaveAll];
+            [self launchNextTask];
         }
-    }
+        if (self.delegate) {
+            if (mediaFile.groupID) {
+                [self.delegate refreshCellWithID:mediaFile.groupID];
+            } else {
+                [self.delegate refreshCellWithID:mediaFile.ID];
+            }
+        }
         
-    // 关闭流
-    [mediaFile.stream close];
-     mediaFile.stream = nil;
-    
-    // 清除任务
-    [self.tasks removeObjectForKey:mediaFile.ID];
-    [self.mediaFiles removeObjectForKey:@(task.taskIdentifier).stringValue];
+        
+        // 清除任务
+        
+        [self.tasks removeObjectForKey:mediaFile.ID];
+    }
+
 
 }
 

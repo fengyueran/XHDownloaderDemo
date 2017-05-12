@@ -43,7 +43,7 @@
 
 //获取已下载的文件大小
 - (unsigned long long)fileSizeForPath:(NSString *)path {
-    signed long long fileSize = 0;
+    long long fileSize = 0;
     NSFileManager *fileManager = [NSFileManager new]; // default is not thread safe
     if ([fileManager fileExistsAtPath:path]) {
         NSError *error = nil;
@@ -56,6 +56,7 @@
 }
 
 - (void)saveFile:(XHMediaFile *)mf {
+
     if (mf) {
         [self.db saveFile:mf];
     }

@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) NSString *groupID;
 @property (strong, nonatomic) NSMutableArray *mediaArr;
-@property (nonatomic, assign) float progress;
+@property (nonatomic, assign) NSUInteger progress;
 /** 文件状态 */
 @property (nonatomic, assign) MediaFileState state;
 

@@ -46,7 +46,8 @@
     } else if (count == pendingFileNum) {
         _state = MediaFileStatePending;
     }
-    _progress = _progress/count;
+    _progress =(int)((_progress * 1.0)/count);
+    NSLog(@"progress=%ld",_progress);
 }
 
 
