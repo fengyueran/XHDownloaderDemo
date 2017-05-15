@@ -67,6 +67,10 @@
  */
 - (XHMediaGroup*)getMediaByGroupID:(NSString*)groupID;
 
+
+- (NSArray*)getCompletedArr;
+- (NSArray*)getUnompleteArr;
+
 /**
  强制保存所有下载的数据信息到本地
  */

@@ -86,6 +86,27 @@
     return group;
 }
 
+
+- (NSArray*)getCompletedArr {
+    NSMutableArray *tmpArr = [NSMutableArray array];
+    for (XHMediaFile *mf in self.mediaFiles.allValues) {
+        if (mf.completed) {
+            [tmpArr addObject:mf];
+        }
+    }
+    return [tmpArr copy];
+}
+
+- (NSArray*)getUnompleteArr {
+    NSMutableArray *tmpArr = [NSMutableArray array];
+    for (XHMediaFile *mf in self.mediaFiles.allValues) {
+        if (!mf.completed) {
+            [tmpArr addObject:mf];
+        }
+    }
+    return [tmpArr copy];
+}
+
 - (int)runningCount {
     int count = 0;
     for (NSString* key in self.mediaFiles) {
