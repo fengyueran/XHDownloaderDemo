@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		E71B60E81EBC62A3000E97C2 /* DownloadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E71B60E71EBC62A3000E97C2 /* DownloadingCell.xib */; };
 		E71B60EB1EBC62D7000E97C2 /* DownloadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60EA1EBC62D7000E97C2 /* DownloadingCell.m */; };
-		E71B60EE1EBC86EA000E97C2 /* XHMediaDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60ED1EBC86EA000E97C2 /* XHMediaDB.m */; };
-		E71B60F11EBD750E000E97C2 /* XHFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F01EBD750E000E97C2 /* XHFileManager.m */; };
-		E71B60F41EBD7757000E97C2 /* XHDownloaderConf.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F31EBD7757000E97C2 /* XHDownloaderConf.m */; };
-		E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */; };
 		E72073301EAF67D300A3B879 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E720732F1EAF67D300A3B879 /* main.m */; };
 		E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073321EAF67D300A3B879 /* AppDelegate.m */; };
 		E72073361EAF67D300A3B879 /* GroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073351EAF67D300A3B879 /* GroupViewController.m */; };
@@ -21,10 +17,14 @@
 		E720733E1EAF67D300A3B879 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E720733C1EAF67D300A3B879 /* LaunchScreen.storyboard */; };
 		E72073491EAF67D300A3B879 /* XHDownloaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073481EAF67D300A3B879 /* XHDownloaderDemoTests.m */; };
 		E72073541EAF67D300A3B879 /* XHDownloaderDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073531EAF67D300A3B879 /* XHDownloaderDemoUITests.m */; };
-		E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E72073621EAF67F700A3B879 /* XHDownloader.m */; };
 		E757CF501EC2EE13007CB821 /* NonGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E757CF4F1EC2EE13007CB821 /* NonGroupViewController.m */; };
-		E7EC38FA1EB9E85B00320DA1 /* XHMediaFile.m in Sources */ = {isa = PBXBuildFile; fileRef = E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */; };
-		E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */; };
+		E7A7E7EE1EDEC22D00F99162 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7E11EDEC22D00F99162 /* NSString+Hash.m */; };
+		E7A7E7EF1EDEC22D00F99162 /* XHDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7E31EDEC22D00F99162 /* XHDownloader.m */; };
+		E7A7E7F01EDEC22D00F99162 /* XHDownloaderConf.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7E51EDEC22D00F99162 /* XHDownloaderConf.m */; };
+		E7A7E7F11EDEC22D00F99162 /* XHFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7E71EDEC22D00F99162 /* XHFileManager.m */; };
+		E7A7E7F21EDEC22D00F99162 /* XHMediaDB.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7E91EDEC22D00F99162 /* XHMediaDB.m */; };
+		E7A7E7F31EDEC22D00F99162 /* XHMediaFile.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7EB1EDEC22D00F99162 /* XHMediaFile.m */; };
+		E7A7E7F41EDEC22D00F99162 /* XHMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A7E7ED1EDEC22D00F99162 /* XHMediaGroup.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,14 +48,6 @@
 		E71B60E71EBC62A3000E97C2 /* DownloadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DownloadingCell.xib; sourceTree = "<group>"; };
 		E71B60E91EBC62D7000E97C2 /* DownloadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadingCell.h; sourceTree = "<group>"; };
 		E71B60EA1EBC62D7000E97C2 /* DownloadingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadingCell.m; sourceTree = "<group>"; };
-		E71B60EC1EBC86EA000E97C2 /* XHMediaDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaDB.h; sourceTree = "<group>"; };
-		E71B60ED1EBC86EA000E97C2 /* XHMediaDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaDB.m; sourceTree = "<group>"; };
-		E71B60EF1EBD750E000E97C2 /* XHFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHFileManager.h; sourceTree = "<group>"; };
-		E71B60F01EBD750E000E97C2 /* XHFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHFileManager.m; sourceTree = "<group>"; };
-		E71B60F21EBD7757000E97C2 /* XHDownloaderConf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloaderConf.h; sourceTree = "<group>"; };
-		E71B60F31EBD7757000E97C2 /* XHDownloaderConf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloaderConf.m; sourceTree = "<group>"; };
-		E71B60F51EC16F7B000E97C2 /* XHMediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaGroup.h; sourceTree = "<group>"; };
-		E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaGroup.m; sourceTree = "<group>"; };
 		E720732B1EAF67D300A3B879 /* XHDownloaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XHDownloaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E720732F1EAF67D300A3B879 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E72073311EAF67D300A3B879 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -72,14 +64,22 @@
 		E720734F1EAF67D300A3B879 /* XHDownloaderDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XHDownloaderDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E72073531EAF67D300A3B879 /* XHDownloaderDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XHDownloaderDemoUITests.m; sourceTree = "<group>"; };
 		E72073551EAF67D300A3B879 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E72073611EAF67F700A3B879 /* XHDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloader.h; sourceTree = "<group>"; };
-		E72073621EAF67F700A3B879 /* XHDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloader.m; sourceTree = "<group>"; };
 		E757CF4E1EC2EE13007CB821 /* NonGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonGroupViewController.h; sourceTree = "<group>"; };
 		E757CF4F1EC2EE13007CB821 /* NonGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonGroupViewController.m; sourceTree = "<group>"; };
-		E7EC38F81EB9E85B00320DA1 /* XHMediaFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaFile.h; sourceTree = "<group>"; };
-		E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaFile.m; sourceTree = "<group>"; };
-		E7EC39001EB9F5ED00320DA1 /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
-		E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
+		E7A7E7E01EDEC22D00F99162 /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
+		E7A7E7E11EDEC22D00F99162 /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
+		E7A7E7E21EDEC22D00F99162 /* XHDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloader.h; sourceTree = "<group>"; };
+		E7A7E7E31EDEC22D00F99162 /* XHDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloader.m; sourceTree = "<group>"; };
+		E7A7E7E41EDEC22D00F99162 /* XHDownloaderConf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDownloaderConf.h; sourceTree = "<group>"; };
+		E7A7E7E51EDEC22D00F99162 /* XHDownloaderConf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDownloaderConf.m; sourceTree = "<group>"; };
+		E7A7E7E61EDEC22D00F99162 /* XHFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHFileManager.h; sourceTree = "<group>"; };
+		E7A7E7E71EDEC22D00F99162 /* XHFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHFileManager.m; sourceTree = "<group>"; };
+		E7A7E7E81EDEC22D00F99162 /* XHMediaDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaDB.h; sourceTree = "<group>"; };
+		E7A7E7E91EDEC22D00F99162 /* XHMediaDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaDB.m; sourceTree = "<group>"; };
+		E7A7E7EA1EDEC22D00F99162 /* XHMediaFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaFile.h; sourceTree = "<group>"; };
+		E7A7E7EB1EDEC22D00F99162 /* XHMediaFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaFile.m; sourceTree = "<group>"; };
+		E7A7E7EC1EDEC22D00F99162 /* XHMediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMediaGroup.h; sourceTree = "<group>"; };
+		E7A7E7ED1EDEC22D00F99162 /* XHMediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMediaGroup.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,8 +139,8 @@
 				E71B60E91EBC62D7000E97C2 /* DownloadingCell.h */,
 				E71B60EA1EBC62D7000E97C2 /* DownloadingCell.m */,
 				E71B60E71EBC62A3000E97C2 /* DownloadingCell.xib */,
-				E7EC38F71EB9E80300320DA1 /* XHDownloader */,
 				E72073371EAF67D300A3B879 /* Main.storyboard */,
+				E7A7E7DE1EDEC22D00F99162 /* XHDownloader */,
 				E720733A1EAF67D300A3B879 /* Assets.xcassets */,
 				E720733C1EAF67D300A3B879 /* LaunchScreen.storyboard */,
 				E720733F1EAF67D300A3B879 /* Info.plist */,
@@ -175,31 +175,31 @@
 			path = XHDownloaderDemoUITests;
 			sourceTree = "<group>";
 		};
-		E7EC38F71EB9E80300320DA1 /* XHDownloader */ = {
+		E7A7E7DE1EDEC22D00F99162 /* XHDownloader */ = {
 			isa = PBXGroup;
 			children = (
-				E7EC38FF1EB9F5ED00320DA1 /* MD5 */,
-				E71B60EF1EBD750E000E97C2 /* XHFileManager.h */,
-				E71B60F01EBD750E000E97C2 /* XHFileManager.m */,
-				E71B60F21EBD7757000E97C2 /* XHDownloaderConf.h */,
-				E71B60F31EBD7757000E97C2 /* XHDownloaderConf.m */,
-				E72073611EAF67F700A3B879 /* XHDownloader.h */,
-				E72073621EAF67F700A3B879 /* XHDownloader.m */,
-				E7EC38F81EB9E85B00320DA1 /* XHMediaFile.h */,
-				E7EC38F91EB9E85B00320DA1 /* XHMediaFile.m */,
-				E71B60EC1EBC86EA000E97C2 /* XHMediaDB.h */,
-				E71B60ED1EBC86EA000E97C2 /* XHMediaDB.m */,
-				E71B60F51EC16F7B000E97C2 /* XHMediaGroup.h */,
-				E71B60F61EC16F7B000E97C2 /* XHMediaGroup.m */,
+				E7A7E7DF1EDEC22D00F99162 /* MD5 */,
+				E7A7E7E21EDEC22D00F99162 /* XHDownloader.h */,
+				E7A7E7E31EDEC22D00F99162 /* XHDownloader.m */,
+				E7A7E7E41EDEC22D00F99162 /* XHDownloaderConf.h */,
+				E7A7E7E51EDEC22D00F99162 /* XHDownloaderConf.m */,
+				E7A7E7E61EDEC22D00F99162 /* XHFileManager.h */,
+				E7A7E7E71EDEC22D00F99162 /* XHFileManager.m */,
+				E7A7E7E81EDEC22D00F99162 /* XHMediaDB.h */,
+				E7A7E7E91EDEC22D00F99162 /* XHMediaDB.m */,
+				E7A7E7EA1EDEC22D00F99162 /* XHMediaFile.h */,
+				E7A7E7EB1EDEC22D00F99162 /* XHMediaFile.m */,
+				E7A7E7EC1EDEC22D00F99162 /* XHMediaGroup.h */,
+				E7A7E7ED1EDEC22D00F99162 /* XHMediaGroup.m */,
 			);
-			name = XHDownloader;
+			path = XHDownloader;
 			sourceTree = "<group>";
 		};
-		E7EC38FF1EB9F5ED00320DA1 /* MD5 */ = {
+		E7A7E7DF1EDEC22D00F99162 /* MD5 */ = {
 			isa = PBXGroup;
 			children = (
-				E7EC39001EB9F5ED00320DA1 /* NSString+Hash.h */,
-				E7EC39011EB9F5ED00320DA1 /* NSString+Hash.m */,
+				E7A7E7E01EDEC22D00F99162 /* NSString+Hash.h */,
+				E7A7E7E11EDEC22D00F99162 /* NSString+Hash.m */,
 			);
 			path = MD5;
 			sourceTree = "<group>";
@@ -339,16 +339,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7EC38FA1EB9E85B00320DA1 /* XHMediaFile.m in Sources */,
 				E71B60EB1EBC62D7000E97C2 /* DownloadingCell.m in Sources */,
-				E71B60F41EBD7757000E97C2 /* XHDownloaderConf.m in Sources */,
-				E71B60EE1EBC86EA000E97C2 /* XHMediaDB.m in Sources */,
-				E7EC39021EB9F5ED00320DA1 /* NSString+Hash.m in Sources */,
-				E72073631EAF67F700A3B879 /* XHDownloader.m in Sources */,
+				E7A7E7F31EDEC22D00F99162 /* XHMediaFile.m in Sources */,
+				E7A7E7EF1EDEC22D00F99162 /* XHDownloader.m in Sources */,
+				E7A7E7F01EDEC22D00F99162 /* XHDownloaderConf.m in Sources */,
+				E7A7E7EE1EDEC22D00F99162 /* NSString+Hash.m in Sources */,
 				E757CF501EC2EE13007CB821 /* NonGroupViewController.m in Sources */,
-				E71B60F11EBD750E000E97C2 /* XHFileManager.m in Sources */,
+				E7A7E7F41EDEC22D00F99162 /* XHMediaGroup.m in Sources */,
+				E7A7E7F11EDEC22D00F99162 /* XHFileManager.m in Sources */,
+				E7A7E7F21EDEC22D00F99162 /* XHMediaDB.m in Sources */,
 				E72073361EAF67D300A3B879 /* GroupViewController.m in Sources */,
-				E71B60F71EC16F7B000E97C2 /* XHMediaGroup.m in Sources */,
 				E72073331EAF67D300A3B879 /* AppDelegate.m in Sources */,
 				E72073301EAF67D300A3B879 /* main.m in Sources */,
 			);
